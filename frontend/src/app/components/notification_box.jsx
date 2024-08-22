@@ -5,7 +5,7 @@ import notif from '../../../public/icon_notif.png';
 
 const NotificationBox = ({ onSwitch }) => {
   return (
-    <div style={styles.container}>
+    <div style={styles.container} onClick={onSwitch}>
       <Image
         src={notif}
         alt="Notification Icon"
@@ -16,9 +16,6 @@ const NotificationBox = ({ onSwitch }) => {
       <p style={{ color: '#335' }}>
         Hello testing
       </p>
-      <button onClick={onSwitch} style={styles.button}>
-        Switch to QuestUI
-      </button>
     </div>
   );
 };
@@ -35,18 +32,10 @@ const styles = {
     position: 'absolute',
     top: '200px',
     left: '550px',
+    cursor: 'pointer', // This makes the entire box look like a clickable button
   },
   icon: {
     marginRight: '10px',
-  },
-  button: {
-    marginLeft: '10px',
-    padding: '5px 10px',
-    backgroundColor: '#008CBA',
-    color: 'white',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
   },
 };
 

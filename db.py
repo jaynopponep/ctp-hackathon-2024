@@ -40,6 +40,7 @@ class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(255), nullable=False)
     password = db.Column(db.String(255), nullable=False)
     score = db.Column(db.Integer, nullable=True)
 
@@ -142,13 +143,14 @@ def fetch_quiz(quest_id):
 @app.route('/sign-up', methods=['POST'])
 def sign_up():
     username = request.args.get('user')
+    email = request.args.get('email')
     password = request.args.get('password')
 
     # error handling
-    if not username or not password:
-        return "Please provide both user and password", 404
+    if not username or not password or not email:
+        return "Please provide user, email, and password", 404
     try:
-        new_user = User(username=username, password=password)
+        new_user = User(username=username, email=email, password=password)
         db.session.add(new_user)
         db.session.commit()
         return jsonify({"message": f"User {username} signed up successfully!"}), 200
@@ -161,7 +163,7 @@ def sign_up():
 def login():
     username = request.args.get('user')
     password = request.args.get('password')
-
+    # TODO: Include choice between user and email compatibility
     # error handle
     if not username or not password:
         return "Please provide both user and password", 404
@@ -211,7 +213,6 @@ def add_score():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 404
-# 12
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -108,13 +108,29 @@ def index():
 
     return render_template('host.html')
 
+@app.route('/get-options', methods=['GET'])
+def get_options(): # get options based on current question shown on screen
+    try:
+        question_id = request.args.get('question_id')
+        if not question_id:
+            return render_template('get_options.html', error="Options to question not found")
+        sel = select(Option).where(Option.question_id == question_id)
+        result = db.session.execute(sel).all()
+        options = [row[0] for row in result]
+
+        options_data = [{"option_id": o.option_id, "option_text": o.option_text, "correct_bool": o.correct_bool} for o in options]
+        return jsonify(options_data)
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
 
 @app.route('/get-questions', methods=['GET'])
 def get_questions(): # get questions based on quest_id
     try:
         quest_id = request.args.get('quest_id')
         if not quest_id:
-            return render_template('fetch_quiz.html', error="Quiz not found")
+            return render_template('get_questions.html', error="Quiz not found")
 
         # retrieve questions using quest id
         sel = select(Question).where(Question.quest_id == quest_id)

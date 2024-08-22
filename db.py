@@ -211,7 +211,7 @@ def add_score():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 404
-
+# 12
 
 if __name__ == '__main__':
     app.run(debug=True)

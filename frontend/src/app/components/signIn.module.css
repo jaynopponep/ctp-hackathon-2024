@@ -6,7 +6,7 @@
   font-family: "Jersey 10", sans-serif;
   padding: 16px;
   background-color: rgba(199, 65, 154, 0.7); /* Semi-transparent background (50% opacity) */
-  color: rgb(255, 225, 225);
+  color: rgb(204, 191, 191);
   border-radius: 8px;
   border: 2px solid #f54ade; 
   width: 100%;
@@ -18,7 +18,7 @@
   text-align: center;
   color: white; /* Set the font color to white */
   font-size: 2rem; /* Increase the font size */
-  filter: drop-shadow(10px 4px 4px #000000);
+  filter: drop-shadow(5px 3px 3px #000000);
 }
 
 .subheading {

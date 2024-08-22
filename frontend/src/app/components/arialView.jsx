@@ -73,7 +73,7 @@ const AerialView = () => {
         )}
         <div style={{ textAlign: 'center', marginTop: '10px' }}>
           {isSignUp ? (
-            <p style={{ textShadow: '7px 7px 7px rgba(0, 0, 0, 0.5)' }}> {/* Apply shadow to the full phrase */}
+            <p style={{ textShadow: '10px 15px 15px rgba(0, 0, 0, 0.9)' }}> {/* Apply shadow to the full phrase */}
               Already have an account?{' '}
               <span
                 onClick={() => setIsSignUp(false)}
@@ -86,7 +86,7 @@ const AerialView = () => {
               </span>
             </p>
           ) : (
-            <p style={{ textShadow: '7px 7px 7px rgba(0, 0, 0, 0.5)' }}> {/* Apply shadow to the full phrase */}
+            <p style={{ textShadow: '10px 15px 15px rgba(0, 0, 0, 0.9)' }}> {/* Apply shadow to the full phrase */}
               Don't have an account?{' '}
               <span
                 onClick={() => setIsSignUp(true)}

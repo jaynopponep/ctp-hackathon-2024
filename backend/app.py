@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 from flask_mysqldb import MySQL
-
+from llm import run_query
 app = Flask(__name__)
 
 app.config['MYSQL_HOST'] = 'sql5.freesqldatabase.com'

@@ -106,7 +106,6 @@ def index():
     return render_template('host.html')
 
 
-# Fetch the quest
 @app.route('/fetch-quiz/<int:quest_id>', methods=['GET'])
 def fetch_quiz(quest_id):
     try:
@@ -177,6 +176,41 @@ def login():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 405
+
+
+@app.route('/get-score', methods=['GET'])
+def get_score():
+    username = request.args.get('user')
+    if not username:
+        return "User retrieval error", 404
+    try:
+        sel = select(User.score).where(User.username == username)
+        user_score = db.session.execute(sel).scalar_one_or_none()
+        if not user_score:
+            return jsonify({"Error": "User not found in DB"}), 404
+        return jsonify({"score": user_score}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 405
+
+@app.route('/add-score', methods=['POST'])
+def add_score():
+    username = request.args.get('user')
+    new_score = request.args.get('score')
+
+    # error handle
+    if not username or not new_score:
+        return "Please provide both user and score", 404
+    try:
+        new_score = int(new_score) # set new score to int
+        user = User.query.filter_by(username=username).first() # Queries where username=username
+        # .first() -> first result OR none if none is found
+        user.score += new_score if new_score else 0
+        db.session.commit()
+        return jsonify({"message": "Score added successfully!"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 404
 
 
 if __name__ == '__main__':

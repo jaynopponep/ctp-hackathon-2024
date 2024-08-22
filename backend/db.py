@@ -1,8 +1,11 @@
+import json
+
 from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from sqlalchemy.orm import Session
 from sqlalchemy import select
+from llm import run_query
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://sql5727106:kUcuNKbnJK@sql5.freesqldatabase.com:3306/sql5727106'
@@ -221,6 +224,21 @@ def add_score():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 404
+
+
+@app.route('/query-llm', methods=['POST', 'GET'])
+def query_llm():
+    query = request.args.get('query')
+    chat_history_str = request.args.get('chat_history', '[]')
+    chat_history = json.loads(chat_history_str)  # convert chat_history into json for arg
+    key = request.args.get('openai_api_key')
+    response = run_query(query, chat_history, key)
+    return jsonify(response)
+
+# Sample API call:
+# http://127.0.0.1:5000/query-llm?query="Where is the CCNY mental health center?"&
+# chat_history=[]&
+# openai_api_key=<PUT YOUR KEY HERE!>
 
 if __name__ == '__main__':
     app.run(debug=True)

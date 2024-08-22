@@ -12,9 +12,10 @@ import random
 
 ##loading my environment variables (openai key)
 from dotenv import load_dotenv 
-load_dotenv()
+env_path = os.path.join(os.path.dirname(__file__), '.env')
+load_dotenv(dotenv_path=env_path)
 
-## loading the API key through an ENV file 
+# Now try to get the key
 openai_api_key = os.getenv('OPENAI_API_KEY')
 chat_history = [] #stores chat history              note- it might be better to use a dictionary to hold user and ai responses as a pair. might have to change the function
 random_inquiries = [
@@ -31,7 +32,6 @@ random_inquiries = [
 ]
 
 query = random.choice(random_inquiries)  # Get a random inquiry from the list
-
 def run_query(query, chat_history, openai_api_key):
     load_dotenv()
     persist_directory = 'db'

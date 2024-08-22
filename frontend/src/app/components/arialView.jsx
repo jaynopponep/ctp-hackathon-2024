@@ -8,7 +8,7 @@ const AerialView = () => {
   const videoRef = useRef(null);
 
   const PARAMETER_VALUE = '160 Convent Ave, New York, NY 10031'; // Example: your school's address
-  const API_KEY = process.env.NEXT_PUBLIC_MAP_API_KEY; // Load env
+  const API_KEY = process.env.NEXT_PUBLIC_MAP_API_KEY; // Load .env
 
   useEffect(() => {
     const initAerialView = async () => {

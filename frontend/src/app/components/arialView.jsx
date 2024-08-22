@@ -73,18 +73,36 @@ const AerialView = () => {
         )}
         <div style={{ textAlign: 'center', marginTop: '10px' }}>
           {isSignUp ? (
-            <p>
-              Already have an account? <span onClick={() => setIsSignUp(false)} style={{ color: 'blue', cursor: 'pointer' }}>Sign In</span>
+            <p style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}> {/* Apply shadow to the full phrase */}
+              Already have an account?{' '}
+              <span
+                onClick={() => setIsSignUp(false)}
+                style={{
+                  color: 'blue',
+                  cursor: 'pointer',
+                }}
+              >
+                Sign In
+              </span>
             </p>
           ) : (
-            <p>
-              Don't have an account? <span onClick={() => setIsSignUp(true)} style={{ color: 'blue', cursor: 'pointer' }}>Sign Up</span>
+            <p style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}> {/* Apply shadow to the full phrase */}
+              Don't have an account?{' '}
+              <span
+                onClick={() => setIsSignUp(true)}
+                style={{
+                  color: 'blue',
+                  cursor: 'pointer',
+                }}
+              >
+                Sign Up
+              </span>
             </p>
           )}
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default AerialView;

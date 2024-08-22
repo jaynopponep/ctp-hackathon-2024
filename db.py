@@ -21,7 +21,7 @@ class User(db.Model):
 class Option(db.Model):
     __tablename__ = 'options'
     option_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    question_id = db.Column(db.Integer, db.ForeignKey('questions.question_idd'), nullable=False)
+    question_id = db.Column(db.Integer, db.ForeignKey('questions.question_id'), nullable=False)
     option_text = db.Column(db.String(255), nullable=False)
     correct_bool = db.Column(db.String(255), nullable=False)
     question = db.relationship('Question', backref=db.backref('options', lazy=True))
@@ -81,7 +81,7 @@ def index():
 
             for question in questions:
                 new_question = Question(
-                    quiz_id=new_quest.Name,
+                    quest_id=new_quest.Name,
                     question_text=question['question_text'],
 
                     correct_option=int(question['correct_option'])
@@ -109,33 +109,23 @@ def index():
     return render_template('host.html')
 
 
-@app.route('/fetch-quiz/<int:quest_id>', methods=['GET'])
-def fetch_quiz(quest_id):
+@app.route('/get-questions', methods=['GET'])
+def get_questions(): # get questions based on quest_id
     try:
-        session = db.session
-        quest = session.query(Quest).get(quest_id)
-        if not quest:
+        quest_id = request.args.get('quest_id')
+        if not quest_id:
             return render_template('fetch_quiz.html', error="Quiz not found")
 
-        # Fetch questions using quest_id
-        questions = Question.query.filter_by(quiz_id=quest_id).all()
-        quiz_data = {
-            "title": quest.title,
-            "location_id": quest.location_id,
-            "created_at": quest.created_at,
-            "questions": []
-        }
+        # retrieve questions using quest id
+        sel = select(Question).where(Question.quest_id == quest_id)
+        result = db.session.execute(sel).all() # <- sql select query
+        questions = [row[0] for row in result] # interacts with each row and extracts each tuple (row[0]) and map into questions
 
-        # Fetch question_id, their options and correct answer
-        for question in questions:
-            options = Option.query.filter_by(question_id=question.id).all()
-            quiz_data["questions"].append({
-                "id": question.id,
-                "question_text": question.question_text,
-                "options": [{"id": option.id, "option_text": option.option_text} for option in options],
-                "correct_option": question.correct_option
-            })
-        return jsonify(quiz_data)
+        # built the data into json mapping
+        question_data = [{"question_id": q.question_id, "question_title": q.question_title} for q in questions]
+        # reference to the above process for future mappings with sqlalchemy
+
+        return jsonify(question_data)
 
     except Exception as e:
         db.session.rollback()

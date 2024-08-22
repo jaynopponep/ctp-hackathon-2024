@@ -111,8 +111,6 @@ def index():
 def fetch_quiz(quest_id):
     try:
         session = db.session
-
-
         quest = session.query(Quest).get(quest_id)
         if not quest:
             return render_template('fetch_quiz.html', error="Quiz not found")
@@ -125,7 +123,7 @@ def fetch_quiz(quest_id):
             "created_at": quest.created_at,
             "questions": []
         }
-        
+
         # Fetch question_id, their options and correct answer
         for question in questions:
             options = Option.query.filter_by(question_id=question.id).all()
@@ -135,10 +133,10 @@ def fetch_quiz(quest_id):
                 "options": [{"id": option.id, "option_text": option.option_text} for option in options],
                 "correct_option": question.correct_option
             })
-
         return jsonify(quiz_data)
 
     except Exception as e:
+        db.session.rollback()
         return jsonify({'error': str(e)}), 500
 
 

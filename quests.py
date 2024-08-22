@@ -1,7 +1,9 @@
+
 from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-
+from sqlalchemy.orm import Session
+from sqlalchemy import select
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://sql5727106:kUcuNKbnJK@sql5.freesqldatabase.com:3306/sql5727106'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -109,11 +111,12 @@ def index():
 
 # Fetch the quest
 @app.route('/fetch-quiz/<int:quest_id>', methods=['GET'])
-
 def fetch_quiz(quest_id):
     try:
+        session = db.session
 
-        quest = Quest.query.get(quest_id)
+
+        quest = session.query(Quest).get(quest_id)
         if not quest:
             return render_template('fetch_quiz.html', error="Quiz not found")
 
@@ -125,7 +128,8 @@ def fetch_quiz(quest_id):
             "created_at": quest.created_at,
             "questions": []
         }
-        #Fetch question_id, their options and correct answer
+        
+        # Fetch question_id, their options and correct answer
         for question in questions:
             options = Option.query.filter_by(question_id=question.id).all()
             quiz_data["questions"].append({
@@ -135,9 +139,10 @@ def fetch_quiz(quest_id):
                 "correct_option": question.correct_option
             })
 
-        return render_template('fetch_quiz.html', quiz=quiz_data)
+        return jsonify(quiz_data)
+
     except Exception as e:
-        return render_template('fetch_quiz.html', error=str(e))
+        return jsonify({'error': str(e)}), 500
 
 
 

@@ -6,12 +6,20 @@ from flask_migrate import Migrate
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from llm import run_query
+from flask_mail import Mail,Message
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://sql5727106:kUcuNKbnJK@sql5.freesqldatabase.com:3306/sql5727106'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['Mail_Server'] = 'smtp.gmail.com'#the email server you will use
+app.config['Mail_Port'] = 465
+app.config['Mail_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+app.config['Mail_Username'] = 'sender_email' # insert your  email here
+app.config['Mail_Password']='sender_password'# if use gmail, go to your accoutns and make a app password for this
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+mail = Mail(app)
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -52,21 +60,24 @@ class Location(db.Model):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    if request.method == 'POST':
+    if request.method=='POST':
         try:
             title = request.form.get('title')
-            location_id = request.form.get('location_id')
-            questions = []
+            location_id=request.form.get('location_id')
+            questions=[]
 
             if not title or not location_id:
                 return render_template('host.html', error='Title and Location are required')
 
             for i in range(1, 6):
                 question_text = request.form.get(f'question_text_{i}')
-
-                options = [request.form.get(f'option_{i}_{j}') for j in range(1, 5)]
-
                 correct_option = request.form.get(f'correct_option_{i}')
+                options= [
+                    request.form.get(f'option_{i}_1'),
+                    request.form.get(f'option_{i}_2'),
+                    request.form.get(f'option_{i}_3'),
+                    request.form.get(f'option_{i}_4')
+                ]
 
                 if question_text:
                     questions.append({
@@ -81,36 +92,39 @@ def index():
             )
             db.session.add(new_quest)
             db.session.commit()
-
             for question in questions:
                 new_question = Question(
-                    quest_id=new_quest.Name,
-                    question_text=question['question_text'],
-
-                    correct_option=int(question['correct_option'])
+                    quest_id=new_quest.quest_id,
+                    question_title=question['question_text']
                 )
                 db.session.add(new_question)
-
                 db.session.commit()
 
-                for option_text in question['options']:
+                for j, option_text in enumerate(question['options']):
                     if option_text:
                         new_option = Option(
-                            question_id=new_question.id,
-                            option_text=option_text
+                            question_id=new_question.question_id,
+                            option_text=option_text,
+                            correct_bool=1 if j==int(question['correct_option']) else 0
                         )
                         db.session.add(new_option)
 
                 db.session.commit()
-
-            return render_template('host.html', success='Quiz created successfully!')
-
+                users = User.query.all()
+                for user in users:
+                    msg = Message(
+                        subject="New Quest Posted",
+                        sender='noreply@demo.com',
+                        recipients=[user.email],#replace with your email if needed
+                        body=f"A new quest has been posted,check it out now"
+                    )
+                try:
+                    mail.send(msg)
+                except Exception as e:
+                    print (f"Failed to send email!:{str(e)}")
+            return render_template ('host.html',success='Quiz created successfully!')
         except Exception as e:
             db.session.rollback()
-            return render_template('host.html', error=str(e))
-
-    return render_template('host.html')
-
 @app.route('/get-options', methods=['GET'])
 def get_options(): # get options based on current question shown on screen
     try:

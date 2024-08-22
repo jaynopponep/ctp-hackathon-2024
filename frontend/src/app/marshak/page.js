@@ -1,18 +1,27 @@
-'use client'
-import React from 'react';
-import Marshak from '../components/marshakView'; //rendered all google maps components via embedded html scenes. if we used the actual link we could make it interactable, however that detracts from other features of our product.
-import Nac from '../components/nacView'
-import SophieDavis from '../components/sophieDavisView'
-import Shepard from '../components/shepardView.jsx'
+'use client';
+import React, { useState } from 'react';
+import Marshak from '../components/marshakView';
+import Nac from '../components/nacView';
+import SophieDavis from '../components/sophieDavisView';
+import Shepard from '../components/shepardView.jsx';
+import NotificationBox from '../components/notification_box';
+import QuestUI from '../components/questUI'; // Import your QuestUI component
 
 export default function Map() {
+  const [showQuestUI, setShowQuestUI] = useState(false);
+
+  const handleSwitch = () => {
+    setShowQuestUI(true);
+  };
+
   return (
     <div style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
       <Marshak /> {/* Google Maps as background */}
-      <div style={{ position: 'relative', zIndex: 1, color: 'white', textAlign: 'center', paddingTop: '20vh' }}>
-        <h1>About Us</h1>
-        <p>This is the About page of the project.</p>
-      </div>
+      {!showQuestUI ? (
+        <NotificationBox onSwitch={handleSwitch} />
+      ) : (
+        <QuestUI />
+      )}
     </div>
   );
 }

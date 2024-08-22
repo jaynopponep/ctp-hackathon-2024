@@ -10,32 +10,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-
-class Quest(db.Model):
-    __tablename__ = 'quests'
-    Name = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    title = db.Column(db.String(255), nullable=False)
-    location_id = db.Column(db.Integer, nullable=False)
-    created_at = db.Column(db.TIMESTAMP, nullable=False, default=db.func.current_timestamp())
-
-
-class Question(db.Model):
-    __tablename__ = 'questions'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    quiz_id = db.Column(db.Integer, db.ForeignKey('quests.Name'), nullable=False)
-    question_text = db.Column(db.Text, nullable=False)
-    correct_option = db.Column(db.Integer, nullable=False)
-    quest = db.relationship('Quest', backref=db.backref('questions', lazy=True))
-
-
-class Option(db.Model):
-    __tablename__ = 'options'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    question_id = db.Column(db.Integer, db.ForeignKey('questions.id'), nullable=False)
-    option_text = db.Column(db.String(255), nullable=False)
-    question = db.relationship('Question', backref=db.backref('options', lazy=True))
-
-
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -43,6 +17,34 @@ class User(db.Model):
     email = db.Column(db.String(255), nullable=False)
     password = db.Column(db.String(255), nullable=False)
     score = db.Column(db.Integer, nullable=True)
+
+class Option(db.Model):
+    __tablename__ = 'options'
+    option_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    question_id = db.Column(db.Integer, db.ForeignKey('questions.question_idd'), nullable=False)
+    option_text = db.Column(db.String(255), nullable=False)
+    correct_bool = db.Column(db.String(255), nullable=False)
+    question = db.relationship('Question', backref=db.backref('options', lazy=True))
+
+class Question(db.Model):
+    __tablename__ = 'questions'
+    question_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    quest_id = db.Column(db.Integer, db.ForeignKey('quests.quest_id'), nullable=False)
+    question_title = db.Column(db.String(255), nullable=False)
+    quest = db.relationship('Quest', backref=db.backref('questions', lazy=True))
+    # Many Questions to one Quest possible^
+
+class Quest(db.Model):
+    __tablename__ = 'quests'
+    quest_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(255), nullable=False)
+    location_id = db.Column(db.Integer, db.ForeignKey('locations.location_id'), nullable=False)
+    location = db.relationship('Location', backref=db.backref('quests', lazy=True))
+
+class Location(db.Model):
+    __tablename__ = 'locations'
+    location_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(255), nullable=False)
 
 
 @app.route('/', methods=['GET', 'POST'])

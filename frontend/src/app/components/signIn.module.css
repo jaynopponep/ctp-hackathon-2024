@@ -1,0 +1,35 @@
+/* signIn.module.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Jersey+10&display=swap');
+
+.container {
+  font-family: "Jersey 10", sans-serif;
+  padding: 16px;
+  background-color: rgba(199, 65, 154, 0.7); /* Semi-transparent background (50% opacity) */
+  color: rgb(204, 191, 191);
+  border-radius: 8px;
+  border: 2px solid #f54ade; 
+  width: 100%;
+  max-width: 400px;
+}
+
+.heading {
+  font-family: "Jersey 10", sans-serif;
+  text-align: center;
+  color: white; /* Set the font color to white */
+  font-size: 2rem; /* Increase the font size */
+  filter: drop-shadow(5px 3px 3px #000000);
+}
+
+.subheading {
+  font-family: "Jersey 10", sans-serif;
+  text-align: center;
+  color: white; /* Set the font color to white */
+  font-size: 1.2rem; /* Slightly smaller font size for the subheading */
+  filter: drop-shadow(5px 5px 5px #000000);
+}
+
+.input {
+  background-color: white;
+  color: black;
+}

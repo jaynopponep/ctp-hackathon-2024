@@ -1,11 +1,14 @@
 'use client'
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import SignIn from './signIn';
+import SignUp from './signUp';  // Import the SignUp component
 
-const AerialViewVideo = () => {
+const AerialView = () => {
+  const [isSignUp, setIsSignUp] = useState(false);  // State to toggle between SignIn and SignUp
   const videoRef = useRef(null);
 
-  const PARAMETER_VALUE = '160 Convent Ave, New York, NY 10031'; // this is an example on my school
-  const API_KEY = process.env.NEXT_PUBLIC__MAP_API_KEY; // load .env
+  const PARAMETER_VALUE = '160 Convent Ave, New York, NY 10031'; // Example: your school's address
+  const API_KEY = process.env.NEXT_PUBLIC_MAP_API_KEY; // Load env
 
   useEffect(() => {
     const initAerialView = async () => {
@@ -25,7 +28,7 @@ const AerialViewVideo = () => {
       urlParameter.set('key', API_KEY);
 
       try {
-        // Fetch video data from the Aerial View API, note this is only on ccny nac
+        // Fetch video data from the Aerial View API, note this is only on CCNY NAC
         const response = await fetch(`https://aerialview.googleapis.com/v1/videos:lookupVideo?${urlParameter.toString()}`);
         const videoResult = await response.json();
 
@@ -51,10 +54,55 @@ const AerialViewVideo = () => {
   };
 
   return (
-    <video ref={videoRef} autoPlay loop muted style={{ width: '100%' }}>
-      Your browser does not support the video tag.
-    </video>
+    <div style={{ position: 'relative', width: '100%', height: 'auto' }}>
+      <video ref={videoRef} autoPlay loop muted style={{ width: '100%' }}>
+        Your browser does not support the video tag.
+      </video>
+      <div style={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '100%',
+        maxWidth: '400px'
+      }}>
+        {isSignUp ? (
+          <SignUp />
+        ) : (
+          <SignIn />
+        )}
+        <div style={{ textAlign: 'center', marginTop: '10px' }}>
+          {isSignUp ? (
+            <p style={{ textShadow: '10px 15px 15px rgba(0, 0, 0, 0.9)' }}> {/* Apply shadow to the full phrase */}
+              Already have an account?{' '}
+              <span
+                onClick={() => setIsSignUp(false)}
+                style={{
+                  color: 'blue',
+                  cursor: 'pointer',
+                }}
+              >
+                Sign In
+              </span>
+            </p>
+          ) : (
+            <p style={{ textShadow: '10px 15px 15px rgba(0, 0, 0, 0.9)' }}> {/* Apply shadow to the full phrase */}
+              Don't have an account?{' '}
+              <span
+                onClick={() => setIsSignUp(true)}
+                style={{
+                  color: 'blue',
+                  cursor: 'pointer',
+                }}
+              >
+                Sign Up
+              </span>
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
   );
-};
+}
 
-export default AerialViewVideo;
+export default AerialView;

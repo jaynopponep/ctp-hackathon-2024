@@ -8,7 +8,7 @@ const AerialView = () => {
   const videoRef = useRef(null);
 
   const PARAMETER_VALUE = '160 Convent Ave, New York, NY 10031'; // Example: your school's address
-  const API_KEY = process.env.NEXT_PUBLIC__MAP_API_KEY; // Load env
+  const API_KEY = process.env.NEXT_PUBLIC_MAP_API_KEY; // Load env
 
   useEffect(() => {
     const initAerialView = async () => {
@@ -73,7 +73,7 @@ const AerialView = () => {
         )}
         <div style={{ textAlign: 'center', marginTop: '10px' }}>
           {isSignUp ? (
-            <p style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}> {/* Apply shadow to the full phrase */}
+            <p style={{ textShadow: '7px 7px 7px rgba(0, 0, 0, 0.5)' }}> {/* Apply shadow to the full phrase */}
               Already have an account?{' '}
               <span
                 onClick={() => setIsSignUp(false)}
@@ -86,7 +86,7 @@ const AerialView = () => {
               </span>
             </p>
           ) : (
-            <p style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}> {/* Apply shadow to the full phrase */}
+            <p style={{ textShadow: '7px 7px 7px rgba(0, 0, 0, 0.5)' }}> {/* Apply shadow to the full phrase */}
               Don't have an account?{' '}
               <span
                 onClick={() => setIsSignUp(true)}

@@ -1,9 +1,9 @@
-
 from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from sqlalchemy.orm import Session
 from sqlalchemy import select
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://sql5727106:kUcuNKbnJK@sql5.freesqldatabase.com:3306/sql5727106'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -11,16 +11,12 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 
-
 class Quest(db.Model):
     __tablename__ = 'quests'
-    Name =db.Column(db.Integer, primary_key=True,  autoincrement=True)
-    title = db.Column(db.String(255),nullable=False)
-    location_id = db.Column(db.Integer,nullable=False) 
+    Name = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(255), nullable=False)
+    location_id = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.TIMESTAMP, nullable=False, default=db.func.current_timestamp())
-
-
-
 
 
 class Question(db.Model):
@@ -31,30 +27,32 @@ class Question(db.Model):
     correct_option = db.Column(db.Integer, nullable=False)
     quest = db.relationship('Quest', backref=db.backref('questions', lazy=True))
 
+
 class Option(db.Model):
     __tablename__ = 'options'
-    id = db.Column(db.Integer, primary_key=True,autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     question_id = db.Column(db.Integer, db.ForeignKey('questions.id'), nullable=False)
-
     option_text = db.Column(db.String(255), nullable=False)
-
     question = db.relationship('Question', backref=db.backref('options', lazy=True))
 
 
-@app.route('/',methods=['GET', 'POST'])
+class User(db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String(255), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    score = db.Column(db.Integer, nullable=True)
 
 
-
+@app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         try:
             title = request.form.get('title')
-            location_id = request.form.get('location_id')  
+            location_id = request.form.get('location_id')
             questions = []
 
-           
             if not title or not location_id:
-
                 return render_template('host.html', error='Title and Location are required')
 
             for i in range(1, 6):
@@ -71,15 +69,13 @@ def index():
                         'correct_option': correct_option
                     })
 
-            
             new_quest = Quest(
                 title=title,
-                location_id=int(location_id)  
+                location_id=int(location_id)
             )
             db.session.add(new_quest)
             db.session.commit()
 
-            
             for question in questions:
                 new_question = Question(
                     quiz_id=new_quest.Name,
@@ -108,6 +104,7 @@ def index():
             return render_template('host.html', error=str(e))
 
     return render_template('host.html')
+
 
 # Fetch the quest
 @app.route('/fetch-quiz/<int:quest_id>', methods=['GET'])
@@ -145,10 +142,43 @@ def fetch_quiz(quest_id):
         return jsonify({'error': str(e)}), 500
 
 
+@app.route('/sign-up', methods=['POST'])
+def sign_up():
+    username = request.args.get('user')
+    password = request.args.get('password')
+
+    # error handling
+    if not username or not password:
+        return "Please provide both user and password", 404
+    try:
+        new_user = User(username=username, password=password)
+        db.session.add(new_user)
+        db.session.commit()
+        return jsonify({"message": f"User {username} signed up successfully!"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 405
 
 
+@app.route('/login', methods=['GET'])
+def login():
+    username = request.args.get('user')
+    password = request.args.get('password')
 
-
+    # error handle
+    if not username or not password:
+        return "Please provide both user and password", 404
+    try:
+        sel = select(User).where(User.username == username)
+        user = db.session.execute(sel).scalar_one_or_none()
+        if not user:
+            return jsonify({"Error": "User not found in DB"}), 404
+        if user.password != password:
+            return jsonify({"Error": "Incorrect password"}), 401
+        return jsonify({"message": "Login Successful!"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 405
 
 
 if __name__ == '__main__':

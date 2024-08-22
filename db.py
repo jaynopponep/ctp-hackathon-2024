@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from sqlalchemy.orm import Session
+from sqlalchemy import select
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://sql5727106:kUcuNKbnJK@sql5.freesqldatabase.com:3306/sql5727106'
@@ -134,7 +135,8 @@ def fetch_quiz(quest_id):
 
         return render_template('fetch_quiz.html', quiz=quiz_data)
     except Exception as e:
-        return render_template('fetch_quiz.html', error=str(e))
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 405
 
 
 @app.route('/sign-up', methods=['POST'])
@@ -150,6 +152,27 @@ def sign_up():
         db.session.add(new_user)
         db.session.commit()
         return jsonify({"message": f"User {username} signed up successfully!"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 405
+
+
+@app.route('/login', methods=['GET'])
+def login():
+    username = request.args.get('user')
+    password = request.args.get('password')
+
+    # error handle
+    if not username or not password:
+        return "Please provide both user and password", 404
+    try:
+        sel = select(User).where(User.username == username)
+        user = db.session.execute(sel).scalar_one_or_none()
+        if not user:
+            return jsonify({"Error": "User not found in DB"}), 404
+        if user.password != password:
+            return jsonify({"Error": "Incorrect password"}), 401
+        return jsonify({"message": "Login Successful!"}), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 405

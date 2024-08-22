@@ -3,23 +3,24 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import styles from './signIn.module.css';  // Import your module CSS
+import styles from './signUp.module.css';  // Import your module CSS (you can reuse signIn.module.css or create a new one)
 
-const SignIn = ({ theme }) => {
+const SignUp = ({ theme }) => {
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
 
-  const handleSignIn = (event) => {
+  const handleSignUp = (event) => {
     event.preventDefault();
-    console.log("Sign-In Simulated");
-    router.push('/'); // Navigate to the homepage after sign-in
+    console.log("Sign-Up Simulated");
+    router.push('/'); // Navigate to the homepage after sign-up
   };
 
   return (
     <Box
       component="form"
-      onSubmit={handleSignIn}
+      onSubmit={handleSignUp}
       className={styles.container}
     >
       <Typography
@@ -27,14 +28,14 @@ const SignIn = ({ theme }) => {
         component="h2"
         className={styles.heading}
       >
-        Welcome To Campus Quest!
+        Join Campus Quest!
       </Typography>
       <Typography
         variant="subtitle1"
         component="h3"
         className={styles.subheading}
       >
-        Please sign in to continue.
+        Create an account to get started.
       </Typography>
       <TextField
         label="Email"
@@ -45,6 +46,7 @@ const SignIn = ({ theme }) => {
         onChange={(e) => setEmail(e.target.value)}
         className={styles.input}
       />
+      
       <TextField
         label="Password"
         type="password"
@@ -62,10 +64,10 @@ const SignIn = ({ theme }) => {
         fullWidth
         sx={{ mt: 3 }}
       >
-        Sign In
+        Sign Up
       </Button>
     </Box>
   );
 };
 
-export default SignIn;
+export default SignUp;

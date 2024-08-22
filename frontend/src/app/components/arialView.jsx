@@ -1,12 +1,14 @@
 'use client'
-import React, { useEffect, useRef } from 'react';
-import SignIn from './signIn'; // Import the SignIn component
+import React, { useState, useEffect, useRef } from 'react';
+import SignIn from './signIn';
+import SignUp from './signUp';  // Import the SignUp component
 
-const AerialViewVideo = () => {
+const AerialView = () => {
+  const [isSignUp, setIsSignUp] = useState(false);  // State to toggle between SignIn and SignUp
   const videoRef = useRef(null);
 
-  const PARAMETER_VALUE = '160 Convent Ave, New York, NY 10031'; // this is an example on my school
-  const API_KEY = process.env.NEXT_PUBLIC__MAP_API_KEY; // load env
+  const PARAMETER_VALUE = '160 Convent Ave, New York, NY 10031'; // Example: your school's address
+  const API_KEY = process.env.NEXT_PUBLIC__MAP_API_KEY; // Load env
 
   useEffect(() => {
     const initAerialView = async () => {
@@ -26,7 +28,7 @@ const AerialViewVideo = () => {
       urlParameter.set('key', API_KEY);
 
       try {
-        // Fetch video data from the Aerial View API, note this is only on ccny nac
+        // Fetch video data from the Aerial View API, note this is only on CCNY NAC
         const response = await fetch(`https://aerialview.googleapis.com/v1/videos:lookupVideo?${urlParameter.toString()}`);
         const videoResult = await response.json();
 
@@ -64,10 +66,25 @@ const AerialViewVideo = () => {
         width: '100%',
         maxWidth: '400px'
       }}>
-        <SignIn theme="light" />
+        {isSignUp ? (
+          <SignUp />
+        ) : (
+          <SignIn />
+        )}
+        <div style={{ textAlign: 'center', marginTop: '10px' }}>
+          {isSignUp ? (
+            <p>
+              Already have an account? <span onClick={() => setIsSignUp(false)} style={{ color: 'blue', cursor: 'pointer' }}>Sign In</span>
+            </p>
+          ) : (
+            <p>
+              Don't have an account? <span onClick={() => setIsSignUp(true)} style={{ color: 'blue', cursor: 'pointer' }}>Sign Up</span>
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
 };
 
-export default AerialViewVideo;
+export default AerialView;

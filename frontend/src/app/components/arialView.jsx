@@ -1,5 +1,6 @@
 'use client'
 import React, { useEffect, useRef } from 'react';
+import SignIn from './signIn'; // Import the SignIn component
 
 const AerialViewVideo = () => {
   const videoRef = useRef(null);
@@ -51,9 +52,21 @@ const AerialViewVideo = () => {
   };
 
   return (
-    <video ref={videoRef} autoPlay loop muted style={{ width: '100%' }}>
-      Your browser does not support the video tag.
-    </video>
+    <div style={{ position: 'relative', width: '100%', height: 'auto' }}>
+      <video ref={videoRef} autoPlay loop muted style={{ width: '100%' }}>
+        Your browser does not support the video tag.
+      </video>
+      <div style={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '100%',
+        maxWidth: '400px'
+      }}>
+        <SignIn theme="light" />
+      </div>
+    </div>
   );
 };
 

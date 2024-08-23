@@ -1,8 +1,8 @@
 .chatContainer {
   position: fixed;
   bottom: 1rem;
-  right: 2.3rem;
-  width: 400px;
+  right: 1.3rem;
+  width: 300px;
   max-height: 400px;
   display: flex;
   flex-direction: column;
@@ -14,7 +14,7 @@
 }
 
 .chatHeader {
-  background-color: #c2c4c7;
+  background-color: #aa54ad;
   color: white;
   padding: 0.5rem;
   text-align: center;

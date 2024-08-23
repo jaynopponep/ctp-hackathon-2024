@@ -10,8 +10,8 @@ const Notif_shepard = () => {
     <Link href="/shepard" 
       style={{
         position: 'absolute',
-        top: '160px',
-        right: '570px',
+        top: '120px',
+        right: '480px',
         cursor: 'pointer',
         padding: '10px',
         zIndex: 1,

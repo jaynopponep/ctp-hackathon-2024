@@ -10,8 +10,8 @@ const Notif_sd = () => {
     <Link href="/sophie_davis" 
       style={{
         position: 'absolute',
-        top: '30px',
-        left: '660px',
+        top: '15px',
+        left: '449px',
         cursor: 'pointer',
         padding: '10px',
         zIndex: 1,

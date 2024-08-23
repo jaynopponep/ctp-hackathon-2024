@@ -37,7 +37,7 @@ const Chat = () => {
 
   return (
     <div className={styles.chatContainer}>
-      <div className={styles.chatHeader}>Assist μ</div>
+      <div className={styles.chatHeader}>QuickCalm</div>
       <div className={styles.chatMessages}>
         {chat.map((entry, index) => (
           <div

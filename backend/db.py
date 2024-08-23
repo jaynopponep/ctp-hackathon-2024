@@ -70,7 +70,8 @@ class QuestProgress(db.Model):
 
 
 @app.route('/get-quest-progress',methods=['GET'])
-# Retrieve the progress and completion status of a specific quest for a user based on quest_id and user_id
+# -> inputs: user_id and quest_id
+# -> output: endpoint returns user_id, progress, and completed (jsonified)
 def quest_progress():
     user_id = request.args.get('user_id')
     quest_id = request.args.get('quest_id')
@@ -93,7 +94,8 @@ def quest_progress():
         return jsonify({'error':'No progress found for this quest and user'}),404
 
 @app.route('/update-quest-progress',methods=['POST'])
-# Update or create quest progress and completion status for a user
+# -> inputs: quest_id, user_id, progress, completed
+# -> output: POST request, user's progress is updated
 def update_progress():
     quest_id = request.args.get('quest_id')
     user_id = request.args.get('user_id')
@@ -123,7 +125,8 @@ def update_progress():
     }), 200
 
 @app.route('/get-completion', methods=['GET'])
-# Calculate and return the percentage of completed quests for a specific user
+# inputs -> userID
+# outputs -> returns user ID, quests done(?), completed quests, completion percentage
 def completion_percentage():
     user_id = request.args.get('user_id')
     total_quests = Quest.query.count()

@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from sqlalchemy.orm import Session
 from sqlalchemy import select
-from llm import run_query
+# from llm import run_query
 from flask_mail import Mail,Message
 
 app = Flask(__name__)
@@ -64,6 +64,7 @@ class QuestProgress(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     quest_id = db.Column(db.Integer, db.ForeignKey('quests.quest_id'), nullable=False)
     progress = db.Column(db.Integer, default=0)
+    completed = db.Column(db.Boolean, default=False)
     user = db.relationship('User', backref=db.backref('quest_progress', lazy=True))
     quest = db.relationship('Quest', backref=db.backref('quest_progress', lazy=True))
 
@@ -71,80 +72,81 @@ class QuestProgress(db.Model):
 
 
 
-@app.route('/quest/<int:quest_id>/progress',methods=['GET'])
+@app.route('/quest/<int:quest_id>/progress',methods=['GET'])#Retrieve and return the progress and completion status of a specific quest for a user based on quest_id and user_id
 def quest_progress(quest_id):
-    user_id =request.args.get('user_id')
-    
-    if not user_id :
-        return jsonify({'error': 'User ID is required'}), 400
+    user_id=request.args.get('user_id')
 
-    try :
-        user_id=int(user_id)
+    if not user_id:
+        return jsonify({'error': 'User ID is required'}),400
+    
+
+    try:
+        user_id = int(user_id)
+
     except ValueError:
         return jsonify({'error': 'Invalid User ID format'}), 400
-
-    print(f"quest_id:{quest_id},user_id:{user_id}") 
-
-    progress = QuestProgress.query.filter_by(user_id=user_id, quest_id=quest_id).first()
+    progress=QuestProgress.query.filter_by(user_id=user_id, quest_id=quest_id).first()
 
     if progress:
         return jsonify({
             'quest_id': quest_id,
             'user_id': user_id,
-            'progress': progress.progress
-
-
+            'progress': progress.progress,
+            'completed': progress.completed
         }), 200
     else:
-        return jsonify({'error': 'No progress found for this quest and user'}), 404
+        return jsonify({'error':'No progress found for this quest and user'}),404
 
 
 
-@app.route('/quest/<int:quest_id>/progress', methods=['POST'])
+
+@app.route('/quest/<int:quest_id>/progress',methods=['POST'])#Update or create quest progress and completion status for a user
 def update_progress(quest_id):
     data = request.json
     user_id = data.get('user_id')
     progress_value = data.get('progress')
+    completed = data.get('completed', False)
 
     if not user_id or progress_value is None:
         return jsonify({'error': 'User ID and progress value are required'}), 400
 
-    progress = QuestProgress.query.filter_by(user_id=user_id, quest_id=quest_id).first()
+    progress=QuestProgress.query.filter_by(user_id=user_id, quest_id=quest_id).first()
 
     if progress:
-        progress.progress =progress_value
+        progress.progress = progress_value
+        progress.completed = completed
     else:
-        progress = QuestProgress(user_id=user_id,quest_id=quest_id,progress=progress_value)
+        progress = QuestProgress(user_id=user_id, quest_id=quest_id, progress=progress_value, completed=completed)
         db.session.add(progress)
 
     db.session.commit()
 
     return jsonify({
-        'message': 'Progress updated successfully',
-        'quest_id': quest_id,
-        'user_id': user_id,
-        'progress': progress.progress
+        'message':'Progress updated successfully',
+        'quest_id':quest_id,
+        'user_id':user_id,
+        'progress': progress.progress,
+        'completed': progress.completed
+
+
     }), 200
 
 
-@app.route('/user/<int:user_id>/completion_percentage', methods=['GET'])
+@app.route('/user/<int:user_id>/completion_percentage', methods=['GET'])# Calculate and return the percentage of completed quests for a specific user
 def completion_percentage(user_id):
-    total_quests= Quest.query.count()
+    total_quests = Quest.query.count()
     
-
     if total_quests == 0:
         return jsonify({'error': 'No quests found'}), 404
 
-    completed_quests =QuestProgress.query.filter_by(user_id=user_id, progress=1).distinct(QuestProgress.quest_id).count()
-
-
-    completion_percentage=(completed_quests / total_quests) * 100
+    completed_quests = QuestProgress.query.filter_by(user_id=user_id, completed=True).distinct(QuestProgress.quest_id).count()
+    completion_percentage = (completed_quests / total_quests) * 100
 
     return jsonify({
-        'user_id': user_id,
+        'user_id':user_id,
         'total_quests': total_quests,
-        'completed_quests': completed_quests,
-        'completion_percentage': completion_percentage }), 200
+        'completed_quests':completed_quests,
+        'completion_percentage': completion_percentage}), 200
 
 
 
@@ -330,14 +332,14 @@ def add_score():
         return jsonify({"error": str(e)}), 404
 
 
-@app.route('/query-llm', methods=['POST', 'GET'])
-def query_llm():
-    query = request.args.get('query')
-    chat_history_str = request.args.get('chat_history', '[]')
-    chat_history = json.loads(chat_history_str)  # convert chat_history into json for arg
-    key = request.args.get('openai_api_key')
-    response = run_query(query, chat_history, key)
-    return jsonify(response)
+# @app.route('/query-llm', methods=['POST', 'GET'])
+# def query_llm():
+#     query = request.args.get('query')
+#     chat_history_str = request.args.get('chat_history', '[]')
+#     chat_history = json.loads(chat_history_str)  # convert chat_history into json for arg
+#     key = request.args.get('openai_api_key')
+#     response = run_query(query, chat_history, key)
+#     return jsonify(response)
 
 
 

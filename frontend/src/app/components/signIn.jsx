@@ -1,19 +1,37 @@
 'use client'
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import styles from './signIn.module.css';  
 
-const SignIn = ({ theme }) => {
-  const [email, setEmail] = useState('');
+const SignIn = () => {
+  const [username, setUsername] = useState('');  // Assuming you need username, not email, for login
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(''); // State for handling errors
   const router = useRouter();
 
-  const handleSignIn = (event) => {
+  const handleSignIn = async (event) => {
     event.preventDefault();
-    console.log("Sign-In Simulated");
-    router.push('/'); // Navigate to the homepage after sign-in
+    setError(''); // Reset error before new attempt
+
+    try {
+      const response = await fetch(`http://localhost:5000/login?user=${username}&password=${password}`, {
+        method: 'GET', // Using GET as per the documentation
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log('Sign-In Successful');
+        router.push('/map'); // Navigate to the /map page after sign-in
+      } else {
+        setError(data.error || 'Login failed. Please try again.');
+      }
+    } catch (err) {
+      console.error('Sign-In Error:', err);
+      setError('Something went wrong. Please try again later.');
+      setErrorColor('green'); 
+    }
   };
 
   return (
@@ -36,13 +54,22 @@ const SignIn = ({ theme }) => {
       >
         Please sign in to continue.
       </Typography>
+      {error && (
+        <Typography
+          variant="body1"
+          color="error"
+          className={styles.error}
+        >
+          {error}
+        </Typography>
+      )}
       <TextField
-        label="Email"
+        label="Username"
         variant="outlined"
         fullWidth
         margin="normal"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
         className={styles.input}
       />
       <TextField

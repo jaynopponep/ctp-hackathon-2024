@@ -79,43 +79,58 @@ def get_questions():
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
+    
+#this one is not that fun : (
+@app.route('/login', methods=['GET']) #this works just avoid the edge case where user not in db
+def login():
+    username = request.args.get('user')
+    password = request.args.get('password')
 
-@app.route('/sign-up', methods=['POST'])
+    if not username or not password:
+        return jsonify({"error": "Please provide both user and password"}), 404
+    
+    try:
+        sel = select(User).where(User.username == username)
+        user = db.session.execute(sel).scalar_one_or_none()
+        
+        if not user:
+            return jsonify({"error": "User not found in DB"}), 404
+        
+        if user.password != password:
+            return jsonify({"error": "Incorrect password"}), 401
+        
+        return jsonify({"message": "Login Successful!"}), 200
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/sign-up', methods=['GET'])
 def sign_up():
     username = request.args.get('user')
     email = request.args.get('email')
     password = request.args.get('password')
 
     if not username or not password or not email:
-        return "Please provide user, email, and password", 404
+        return jsonify({"error": "Please provide user, email, and password"}), 404
+    
     try:
+        # Check if the username already exists
+        existing_user = db.session.execute(select(User).where(User.username == username)).scalar_one_or_none()
+        if existing_user:
+            return jsonify({"error": f"User {username} already exists."}), 409
+        
+        # Create a new user
         new_user = User(username=username, email=email, password=password)
         db.session.add(new_user)
         db.session.commit()
+        
         return jsonify({"message": f"User {username} signed up successfully!"}), 200
+    
     except Exception as e:
         db.session.rollback()
-        return jsonify({"error": str(e)}), 405
-
-@app.route('/login', methods=['GET'])
-def login():
-    username = request.args.get('user')
-    password = request.args.get('password')
-
-    if not username or not password:
-        return "Please provide both user and password", 404
-    try:
-        sel = select(User).where(User.username == username)
-        user = db.session.execute(sel).scalar_one_or_none()
-        if not user:
-            return jsonify({"Error": "User not found in DB"}), 404
-        if user.password != password:
-            return jsonify({"Error": "Incorrect password"}), 401
-        return jsonify({"message": "Login Successful!"}), 200
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({"error": str(e)}), 405
-
+        return jsonify({"error": str(e)}), 500
+    
 @app.route('/get-score', methods=['GET'])
 def get_score():
     username = request.args.get('user')

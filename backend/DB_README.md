@@ -43,7 +43,7 @@ host/add-score?user=<username-here>&score=<added-score-here>
 ### Get questions
 Retrieving questions requires the quest id. Write endpoints like below:</br>
 ```
-host/get-question?quest_id=<quest-id-here>
+host/get-questions?quest_id=<quest-id-here>
 ```
 
 ### Get options/answer choices

@@ -61,9 +61,9 @@ const QuestUI = () => {
             {Object.keys(questPoints).map((id) => (
               <a
                 key={id}
-                href={`/questionID/${id}`}
+                href={`/questID`}
                 className={styles.questItem}
-                onClick={(e) => handleLinkClick(e, `/questionID/${id}`)}
+                onClick={(e) => handleLinkClick(e, `/questID`)}
               >
                 <span>Quest {id}: Mental Health Question {id}</span>
                 <span className={styles.questPoints}>

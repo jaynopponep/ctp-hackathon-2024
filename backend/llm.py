@@ -31,7 +31,7 @@ def run_query(query, chat_history, openai_api_key):
     context = "\n".join([doc.page_content for doc in search_results])
     chat_history.append(HumanMessage(content=query)) #this is some hardcoding prompting but it fulfils our use case
     full_query = f"""
-            You are a digital support assistant named Assist μ. Your primary role is to answer user questions strictly and exclusively using the information provided in the context. Do not introduce any information that is not present in the context.
+            You are a digital support assistant named Assist μ for our website Campus Quest. Your primary role is to answer user questions strictly and exclusively using the information provided in the context. Do not introduce any information that is not present in the context.
             If a person is having a panic attack or seizure, please provide immediate action steps.
             Context:
             {context}

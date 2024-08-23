@@ -40,7 +40,7 @@ def chat():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        # Handle the POST request logic here, same as before
+        # insert post stuff here
         pass
 
     return render_template('host.html')

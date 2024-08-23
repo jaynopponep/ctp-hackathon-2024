@@ -24,7 +24,7 @@ const BackButton = () => {
       }}
     >
       <MdArrowBackIos style={{ marginRight: '10px', color: 'white', fontSize: '2rem' }} /> 
-      <span>Back to Map</span> 
+      <span>Back to Map/span> 
     </Link>
   );
 };

@@ -1,9 +1,6 @@
 'use client';
 import React, { useState } from 'react';
 import Marshak from '../components/marshakView';
-import Nac from '../components/nacView';
-import SophieDavis from '../components/sophieDavisView';
-import Shepard from '../components/shepardView.jsx';
 import NotificationBox from '../components/notification_box';
 import QuestUI from '../components/questUI';
 import BackButton from '../components/BackButton'; 

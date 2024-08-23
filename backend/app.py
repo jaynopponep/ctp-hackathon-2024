@@ -192,15 +192,22 @@ def update_progress():
     data = request.json
     user_id = data.get('user_id')
     progress_value = data.get('progress')
+    completed = data.get('completed', False)
+    if not user_id or progress_value is None:
+        return jsonify({'error': 'User ID and progress value are required'}), 400
+    progress = QuestProgress.query.filter_by(user_id=user_id, quest_id=quest_id).first()
+    if progress:
+        progress.progress = progress_value
+        progress.completed = completed
     else:
-    progress = QuestProgress(user_id=user_id, quest_id=quest_id, progress=progress_value, completed=completed)
-    db.session.add(progress)
+        progress = QuestProgress(user_id=user_id, quest_id=quest_id, progress=progress_value, completed=completed)
+        db.session.add(progress)
     db.session.commit()
-
     return jsonify({
-        'progress': progress.progress,
-        'completed': progress.completed
-    }), 200
+            'progress': progress.progress,
+            'completed': progress.completed
+        }), 200
+
 
 @app.route('/get-completion',methods=['GET'])  # Calculate and return the percentage of completed quests for a specific user
 def completion_percentage():

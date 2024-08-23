@@ -1,40 +1,34 @@
-'use client'
+'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Leaderboard from './Leaderboard';
 import LoadingSpinner from './LoadingSpinner';
-import { FaBars, FaTimes } from 'react-icons/fa'; // Importing icons
-import styles from './QuestUI.module.css'; // Import the CSS module
+import { FaBars, FaTimes } from 'react-icons/fa';
+import styles from './QuestUI.module.css';
 
-//INTERACTIBILITY
-const QuestUI = () => {
+const QuestUI = ({ onClose }) => {
   const [loading, setLoading] = useState(false);
-  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(true); // State to toggle sidebar
+  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(true);
   const router = useRouter();
 
   const handleLinkClick = (event, path) => {
-    event.preventDefault(); // Prevent default link behavior
-    setLoading(true); // Show loading spinner
+    event.preventDefault();
+    setLoading(true);
 
-    // Simulate a delay before routing
     setTimeout(() => {
-      router.push(path); // Redirect to the question page
-    }, 500); // Adjust delay as needed
+      router.push(path);
+    }, 500);
   };
 
-  // Define points for each question
   const questPoints = {
     '1': 200,
     '2': 300,
   };
 
   return (
-    <div className={styles.container}>
-      {/* Loading Spinner */}
+    <div className={styles.questContainer}>
       {loading && <LoadingSpinner />}
-
-      {/* Quest List with Routing */}
       <div className={styles.questList}>
         <div className={styles.questCard}>
           <h2 className={styles.questTitle}>Available Quests:</h2>
@@ -55,9 +49,7 @@ const QuestUI = () => {
           </div>
         </div>
       </div>
-
-      {/* Leaderboard Sidebar */}
-      <div className={`${styles.leaderboardSidebar} ${!isLeaderboardOpen ? styles.leaderboardSidebarClosed : ''}`}>
+      <div className={styles.leaderboardSidebar}>
         <button
           onClick={() => setIsLeaderboardOpen(false)}
           className={styles.openLeaderboardButton}
@@ -66,16 +58,12 @@ const QuestUI = () => {
         </button>
         <Leaderboard />
       </div>
-
-      {/* Open Leaderboard Button */}
-      {!isLeaderboardOpen && (
-        <button
-          onClick={() => setIsLeaderboardOpen(true)}
-          className={styles.openLeaderboardButton}
-        >
-          <FaBars />
-        </button>
-      )}
+      <button
+        onClick={onClose}
+        className={styles.closeQuestUIButton}
+      >
+        Close
+      </button>
     </div>
   );
 };

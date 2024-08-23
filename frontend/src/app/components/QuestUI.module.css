@@ -56,7 +56,6 @@
     width: 25%;
     height: 100%;
     background-color: #d6bcfc; /* Tailwind's bg-purple-300 */
-    background-opacity: 0.75; /* Tailwind's bg-opacity-75 */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Tailwind's shadow-lg */
     transition: transform 0.3s ease-in-out;
     padding: 2rem;
@@ -74,8 +73,7 @@
     position: fixed;
     top: 1rem;
     right: 1rem;
-    background-color: #d6bcfc; /* Tailwind's bg-purple-300 */
-    background-opacity: 1; /* Tailwind's bg-opacity-100 --> adjust later*/
+    background-color: #d6bcfc; /* Tailwind's bg-purple-300 */ 
     color: #fff; /* Tailwind's text-white */
     padding: 0.5rem;
     border-radius: 50%; /* Tailwind's rounded-full */

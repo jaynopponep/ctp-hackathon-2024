@@ -10,8 +10,8 @@ const Notif_marshak = () => {
     <Link href="/marshak" 
       style={{
         position: 'absolute',
-        bottom: '260px',
-        right: '900px',
+        bottom: '200px',
+        right: '820px',
         cursor: 'pointer',
         padding: '10px',
         zIndex: 1,

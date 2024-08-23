@@ -5,7 +5,8 @@ import Nac from '../components/nacView';
 import SophieDavis from '../components/sophieDavisView';
 import Shepard from '../components/shepardView.jsx';
 import NotificationBox from '../components/notification_box';
-import QuestUI from '../components/questUI'; // Import your QuestUI component
+import QuestUI from '../components/questUI';
+import BackButton from '../components/BackButton'; 
 
 export default function Map() {
   const [showQuestUI, setShowQuestUI] = useState(false);
@@ -14,13 +15,18 @@ export default function Map() {
     setShowQuestUI(true);
   };
 
+  const handleCloseQuestUI = () => {
+    setShowQuestUI(false);
+  };
+
   return (
     <div style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
-      <Marshak /> {/* Google Maps as background */}
+      <BackButton />
+      <Marshak />
       {!showQuestUI ? (
         <NotificationBox onSwitch={handleSwitch} />
       ) : (
-        <QuestUI />
+        <QuestUI onClose={handleCloseQuestUI} />
       )}
     </div>
   );

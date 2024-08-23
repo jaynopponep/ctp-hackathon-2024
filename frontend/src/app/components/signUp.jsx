@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import styles from './signUp.module.css';  // Import your module CSS (you can reuse signIn.module.css or create a new one)
+import styles from './signUp.module.css';  
 
 const SignUp = ({ theme }) => {
   const [email, setEmail] = useState('');

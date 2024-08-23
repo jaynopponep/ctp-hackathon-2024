@@ -1,13 +1,13 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react';
 import SignIn from './signIn';
-import SignUp from './signUp';  // Import the SignUp component
+import SignUp from './signUp';  
 
 const AerialView = () => {
   const [isSignUp, setIsSignUp] = useState(false);  // State to toggle between SignIn and SignUp
   const videoRef = useRef(null);
 
-  const PARAMETER_VALUE = '160 Convent Ave, New York, NY 10031'; // Example: your school's address
+  const PARAMETER_VALUE = '160 Convent Ave, New York, NY 10031'; // hard coded example, we will implement more cuny's later.
   const API_KEY = process.env.NEXT_PUBLIC_MAP_API_KEY; // Load env
 
   useEffect(() => {
@@ -73,7 +73,7 @@ const AerialView = () => {
         )}
         <div style={{ textAlign: 'center', marginTop: '10px' }}>
           {isSignUp ? (
-            <p style={{ textShadow: '10px 15px 15px rgba(0, 0, 0, 0.9)' }}> {/* Apply shadow to the full phrase */}
+            <p style={{ textShadow: '10px 15px 15px rgba(0, 0, 0, 0.9)' }}> 
               Already have an account?{' '}
               <span
                 onClick={() => setIsSignUp(false)}
@@ -86,7 +86,7 @@ const AerialView = () => {
               </span>
             </p>
           ) : (
-            <p style={{ textShadow: '10px 15px 15px rgba(0, 0, 0, 0.9)' }}> {/* Apply shadow to the full phrase */}
+            <p style={{ textShadow: '10px 15px 15px rgba(0, 0, 0, 0.9)' }}> 
               Don't have an account?{' '}
               <span
                 onClick={() => setIsSignUp(true)}

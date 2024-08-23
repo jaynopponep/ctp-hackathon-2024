@@ -1,3 +1,4 @@
+'use client'
 import { useState } from 'react';
 import styles from './chatbot.module.css'; // Import the CSS module
 

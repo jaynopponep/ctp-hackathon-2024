@@ -36,7 +36,8 @@ const QuestUI = () => {
     // Implement your logout logic here, e.g., clearing authentication tokens
     // For example, if you're using local storage:
     localStorage.removeItem('authToken'); // Example
-    router.push('/login'); // Redirect to login page after logout
+    localStorage.removeItem("username");
+    router.push('/'); // Redirect to login page after logout
   };
 
   return (

@@ -1,24 +1,41 @@
-/* Leaderboard.module.css */
 .container {
-    background-color: #e2d5f1; /* Equivalent to bg-purple-200 */
-    padding: 1.5rem; /* Equivalent to p-6 */
-    border-radius: 0.5rem; /* Equivalent to rounded-lg */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Equivalent to shadow-lg */
-    width: 100%;
-    max-width: 24rem; /* Equivalent to max-w-md */
-    margin-top: 0.5rem; /* Equivalent to mt-2 */
-  }
-  
-  .title {
-    font-size: 1.5rem; /* Equivalent to text-2xl */
-    color: #000; /* Equivalent to text-black */
-    font-weight: bold; /* Equivalent to font-bold */
-    margin-bottom: 1rem; /* Equivalent to mb-4 */
-  }
-  
-  .listItem {
-    font-size: 1.125rem; /* Equivalent to text-lg */
-    color: #000; /* Equivalent to text-black */
-    margin-bottom: 0.5rem; /* Equivalent to mb-2 */
-  }
-  
+  background-color: rgba(232, 213, 255, 0.5); /* 50% opacity */
+  border-radius: 0.5rem; 
+  padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  height: 100%; 
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 1.5rem; 
+  color: #000; 
+  margin-bottom: 1rem; 
+}
+
+.listContainer {
+  list-style-type: none; 
+  padding: 0;
+  margin: 0;
+  overflow-y: auto; 
+  max-height: calc(100vh - 6rem);
+}
+
+.listItem {
+  background-color: rgba(168, 86, 246, 0.6); /* 60% opacity */
+  color: #fff;
+  padding: 0.5rem 1rem; 
+  border-radius: 0.5rem; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Remove or comment out the logoutButton styles if not needed */
+.logoutButton {
+  display: none; /* Hide the logout button if it's no longer in use */
+}

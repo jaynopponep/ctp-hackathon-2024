@@ -1,9 +1,6 @@
 'use client'
 import React from 'react';
-import Marshak from '../components/marshakView'; //rendered all google maps components via embedded html scenes. if we used the actual link we could make it interactable, however that detracts from other features of our product.
 import Nac from '../components/nacView'
-import SophieDavis from '../components/sophieDavisView'
-import Shepard from '../components/shepardView.jsx'
 import BackButton from './../components/backButton';
 
 export default function Map() {

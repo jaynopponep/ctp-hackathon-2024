@@ -16,12 +16,12 @@ const SignUp = () => {
 
   const handleSignUp = async (event) => {
     event.preventDefault();
-    setError(''); // Reset error before new attempt
-    setErrorColor(''); // Reset error color
+    setError(''); 
+    setErrorColor(''); 
 
     try {
       const response = await fetch(`http://127.0.0.1:5000/sign-up?user=${username}&email=${email}&password=${password}`, {
-        method: 'GET', // Using GET as per the provided documentation
+        method: 'GET', 
       });
 
       const data = await response.json();
@@ -31,16 +31,16 @@ const SignUp = () => {
         setUserSignedUp(true);
       } else {
         setError(data.error || 'Sign-up failed. Please try again.');
-        setErrorColor(response.status >= 500 ? 'orange' : 'red'); // Set color based on status code
+        setErrorColor(response.status >= 500 ? 'orange' : 'red'); 
       }
     } catch (err) {
       console.error('Sign-Up Error:', err);
       setError('Something went wrong. Please try again later.');
-      setErrorColor('orange'); // Set color for unexpected errors
+      setErrorColor('orange');
     }
   };
 
-  if (userSignedUp) {
+  if (userSignedUp) {//use state for sign up success
     return <SignIn />;
   }
 
@@ -67,7 +67,7 @@ const SignUp = () => {
       {error && (
         <Typography
           variant="body1"
-          style={{ color: 'blue' }} // Apply the error color here
+          style={{ color: 'blue' }} 
           className={styles.error}
         >
           {error}

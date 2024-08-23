@@ -5,7 +5,7 @@
 .container {
   font-family: "Jersey 10", sans-serif;
   padding: 16px;
-  background-color: rgba(199, 65, 154, 0.7); /* Semi-transparent background (50% opacity) */
+  background-color: rgba(199, 65, 154, 0.7); 
   color: white;
   border-radius: 8px;
   border: 2px solid #f54ade; 
@@ -17,8 +17,8 @@
   font-family: "Jersey 10", sans-serif;
   text-align: center;
   margin-bottom: 8px;
-  color: white; /* Set the font color to white */
-  font-size: 2rem; /* Increase the font size */
+  color: white;
+  font-size: 2rem; 
   filter: drop-shadow(5px 3px 3px #000000);
 }
 
@@ -26,8 +26,8 @@
   font-family: "Jersey 10", sans-serif;
   text-align: center;
   margin-bottom: 16px;
-  color: white; /* Set the font color to white */
-  font-size: 1.2rem; /* Slightly smaller font size for the subheading */
+  color: white;
+  font-size: 1.2rem; 
   filter: drop-shadow(5px 5px 5px #000000);
 }
 

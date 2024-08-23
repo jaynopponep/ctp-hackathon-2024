@@ -1,12 +1,12 @@
 'use client'
 import { useState } from 'react';
-import styles from './chatbot.module.css'; // Import the CSS module
+import styles from './chatbot.module.css'; 
 
 const BACKEND_URL = 'http://127.0.0.1:5000';
 
 const Chat = () => {
   const [message, setMessage] = useState('');
-  const [chat, setChat] = useState([]); // Removed TypeScript annotation
+  const [chat, setChat] = useState([]); 
 
   const sendMessage = async () => {
     if (!message.trim()) return;
@@ -55,7 +55,7 @@ const Chat = () => {
         <input
           type="text"
           className={styles.chatInput}
-          placeholder="Type your message..."
+          placeholder="Type your message..." //llm text input
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />

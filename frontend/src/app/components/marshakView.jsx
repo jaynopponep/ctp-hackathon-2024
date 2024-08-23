@@ -15,5 +15,5 @@ const GoogleMapsEmbed = () => {
     </div>
   );
 };
-
+//google maps allows static embed to be interactive, howeer we dont really need that for our use case.
 export default GoogleMapsEmbed;

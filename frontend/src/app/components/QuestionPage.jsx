@@ -18,7 +18,7 @@ const QuestionPage = () => {
   console.log(questionId)
   const correctAnswer = questionId === '1' ? 'Counseling Center' : 'Other Answer';
 
-  useEffect(() => {
+  useEffect(() => {//timer function for quests
     if (timeRemaining <= 0) {
       setTimerExpired(true);
       if (timerId) {
@@ -36,7 +36,7 @@ const QuestionPage = () => {
     return () => clearInterval(timer);
   }, [timeRemaining]);
 
-  const handleAnswerClick = (answer) => {
+  const handleAnswerClick = (answer) => {//choice handler for quests
     const isAnswerCorrect = answer === correctAnswer;
     setSelectedAnswer(answer);
     setIsCorrect(isAnswerCorrect);
@@ -57,13 +57,13 @@ const QuestionPage = () => {
     }, 1000);
   };
 
-  return (
+  return ( //choice handler
     <div className={styles.container}>
       <h1 className={styles.title}>Question: {questionId}</h1>
 
-      <div className={styles.timer}>
-        {timerExpired ? "Times up!" : `Time Remaining: ${timeRemaining} seconds`}
-      </div>
+      <div className={styles.timer}> 
+        {timerExpired ? "Times up!" : `Time Remaining: ${timeRemaining} seconds`} 
+      </div> 
 
       <div className={styles.question}>
         {questionId === '1' ? 'Where can you find the mental health center at CCNY?' : 'Which resource provides counseling services for students at CCNY?'}

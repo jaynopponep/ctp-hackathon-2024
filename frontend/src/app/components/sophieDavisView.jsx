@@ -14,7 +14,7 @@ const sdView = () => {
         overflow: 'hidden',
       }}
     >
-      <iframe
+      <iframe //static embed of sophie davis building
         src="https://www.google.com/maps/embed?pb=!4v1724309902645!6m8!1m7!1s0KlOy3DJ9_RpYg7Kuk-9Bw!2m2!1d40.82112602840669!2d-73.95066636381883!3f115.13124329921908!4f2.263903444993815!5f0.7820865974627469" 
         style={{ border: '0', width: '100%', height: '100%', pointerEvents: 'none' }} // Disable interaction
         allowFullScreen={true}

@@ -3,8 +3,8 @@ import Image from 'next/image';
 import React from 'react';
 import notif from '../../../public/icon_notif.png';
 
-const NotificationBox = ({ onSwitch }) => {
-  return (
+const NotificationBox = ({ onSwitch }) => { // notification box to be rendered by pages
+  return (                                  // this will open the leaderboard with a use state on the page
     <div style={styles.container} onClick={onSwitch}>
       <Image
         src={notif}

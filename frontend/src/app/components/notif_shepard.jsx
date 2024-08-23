@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import notif from '../../../public/icon_notif.png';
 
-const Notif_shepard = () => {
+const Notif_shepard = () => {//notification icon on /shepard
   return (
     <Link href="/shepard" 
       style={{

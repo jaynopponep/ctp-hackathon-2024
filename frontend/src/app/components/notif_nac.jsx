@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import notif from '../../../public/icon_notif.png';
 
-const Notif_nac = () => {
+const Notif_nac = () => {//notification icon on /nac
   return (
     <Link href="/nac" 
       style={{

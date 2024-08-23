@@ -6,7 +6,6 @@ import Notif_sd from './notif_sophieDavis';
 import Notif_shepard from './notif_shepard';
 import Notif_nac from './notif_nac';
 import Leaderboard from './Leaderboard';
-import LoadingSpinner from './LoadingSpinner';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import styles from './QuestUI.module.css';
 import leaderboardStyles from './Leaderboard.module.css';
@@ -26,7 +25,7 @@ const MapComponent = () => {
     setIsLeaderboardOpen(!isLeaderboardOpen);
     setTimeout(() => {
       setLoading(false); // Hide the spinner after the toggle is complete
-    }, 500); // Adjust delay as needed
+    }, 500); 
   };
 
   return (
@@ -75,7 +74,7 @@ const MapComponent = () => {
             color: 'white',
             fontSize: '4rem',
             textShadow: '2px 2px 4px black', // Black drop shadow
-            fontFamily: 'Arial, sans-serif', // Adjust font as needed
+            fontFamily: 'Arial, sans-serif',
           }}
         >
           Select a Building
@@ -100,7 +99,7 @@ const MapComponent = () => {
         style={{
           position: 'fixed',
           top: '1rem',
-          right: isLeaderboardOpen ? '26%' : '1rem', // Adjusts position to avoid overlap
+          right: isLeaderboardOpen ? '26%' : '1rem', 
           transform: isLeaderboardOpen ? 'translateX(-100%)' : 'translateX(0)',
           transition: 'transform 0.3s ease, right 0.3s ease',
         }}

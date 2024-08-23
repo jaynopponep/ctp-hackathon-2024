@@ -15,7 +15,7 @@ const SignIn = () => {
     setError(''); // Reset error before new attempt
 
     try {
-      const response = await fetch(`http://localhost:5000/login?user=${username}&password=${password}`, {
+      const response = await fetch(`http://127.0.0.1:5000/login?user=${username}&password=${password}`, {
         method: 'GET', // Using GET as per the documentation
       });
 

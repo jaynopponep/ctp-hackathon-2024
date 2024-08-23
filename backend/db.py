@@ -53,7 +53,7 @@ class QuestProgress(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     quest_id = db.Column(db.Integer, db.ForeignKey('quests.quest_id'), nullable=False)
     progress = db.Column(db.Integer, default=0)
-    completed = db.Column(db.Boolean, default=False)
+    completed = db.Column(db.Integer, default=0) # (yes/no is 1/0)
     user = db.relationship('User', backref=db.backref('quest_progress', lazy=True))
     quest = db.relationship('Quest', backref=db.backref('quest_progress', lazy=True))
 

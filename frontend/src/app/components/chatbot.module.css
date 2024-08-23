@@ -1,11 +1,10 @@
-/* Position the Chatbot on the left-hand side */
 .chatContainer {
   position: fixed;
-  bottom: 1rem; /* Distance from the bottom of the viewport */
-  left: 1rem; /* Distance from the left of the viewport */
-  width: 300px; /* Adjust the width as needed */
-  z-index: 100; /* Ensure it stays above other elements */
-  background-color: rgba(224, 193, 254, 0.315); /* Slightly transparent background */
+  bottom: 1rem;
+  left: 1rem; 
+  width: 300px; 
+  z-index: 100; 
+  background-color: rgba(224, 193, 254, 0.315); 
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -13,7 +12,7 @@
 }
 
 .chatHeader {
-  background-color: rgba(169, 86, 246, 0.474); /* Header color */
+  background-color: rgba(169, 86, 246, 0.474);
   color: #fff;
   padding: 0.5rem;
   text-align: center;
@@ -25,7 +24,7 @@
   flex: 1;
   padding: 0.5rem;
   overflow-y: auto;
-  max-height: 400px; /* Adjust the height as needed */
+  max-height: 400px;
 }
 
 .chatInputContainer {

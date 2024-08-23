@@ -10,8 +10,8 @@ const Notif_nac = () => {
     <Link href="/nac" 
       style={{
         position: 'absolute',
-        bottom: '410px',
-        left: '700px',
+        bottom: '260px',
+        left: '500px',
         cursor: 'pointer',
         padding: '10px',
         zIndex: 1,

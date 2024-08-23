@@ -1,22 +1,24 @@
 'use client';
-import React, { useState } from 'react';
-import styles from './Leaderboard.module.css'; // Import the CSS module
+import React, {useEffect, useState} from 'react';
+import styles from './Leaderboard.module.css';
+import Chat from './Chatbot';
 
 const Leaderboard = () => {
-  const [players, setPlayers] = useState([
-    { name: 'Jay', points: 5000, solvedProblems: [1, 2] },
-    { name: 'Yared', points: 3000, solvedProblems: [1] },
-    { name: 'Jawad', points: 2000, solvedProblems: [1] },
-    { name: 'Ava', points: 1800, solvedProblems: [] },
-    { name: 'Mia', points: 1600, solvedProblems: [2] },
-    { name: 'Liam', points: 1500, solvedProblems: [1] },
-    { name: 'Noah', points: 1400, solvedProblems: [] },
-    { name: 'Olivia', points: 1300, solvedProblems: [1, 2] },
-    { name: 'Ethan', points: 1200, solvedProblems: [] },
-    { name: 'Sophia', points: 1100, solvedProblems: [1] },
-  ]);
-
-  // Limit the number of players to display
+    const [players, setPlayers] = useState([]);
+  useEffect(() => {
+      const getLeaderboard = async () => {
+          try {
+              let response = await fetch(`http://127.0.0.1:5000/get-leaderboard`);
+              let data = await response.json();
+              if (data.leaderboard) {
+                    setPlayers(data.leaderboard); // TODO: add solvedProblems onto display
+                }
+      } catch (error) {
+              console.error(error.message);
+          }
+      };
+      getLeaderboard()
+  }, []);
   const visiblePlayers = players.slice(0, 5);
 
   return (
@@ -26,7 +28,7 @@ const Leaderboard = () => {
         <ul className={styles.listContainer}>
           {visiblePlayers.map((player, index) => (
             <li key={index} className={styles.listItem}>
-              {player.name}: {player.points} pts
+              {player.username}: {player.score} pts
             </li>
           ))}
         </ul>

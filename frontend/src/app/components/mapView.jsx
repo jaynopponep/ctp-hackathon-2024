@@ -65,9 +65,23 @@ const MapComponent = () => {
         <Notif_sd />
         <Notif_shepard />
         <Notif_nac />
+
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '1rem', //Places the text right above the border
+            width: '100%',
+            textAlign: 'center',
+            color: 'white',
+            fontSize: '4rem',
+            textShadow: '2px 2px 4px black', // Black drop shadow
+            fontFamily: 'Arial, sans-serif', // Adjust font as needed
+          }}
+        >
+          Select a Building
+        </div>
       </div>
 
-      {/* Leaderboard Sidebar */}
       <div
         className={`${styles.leaderboardSidebar} ${
           !isLeaderboardOpen ? styles.leaderboardSidebarClosed : ''
@@ -80,7 +94,6 @@ const MapComponent = () => {
         )}
       </div>
 
-      {/* Toggle Button */}
       <button
         onClick={handleLeaderboardToggle}
         className={styles.openLeaderboardButton}

@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from sqlalchemy.orm import Session
 from sqlalchemy import select
-# from llm import run_query
+from llm import run_query
 from flask_mail import Mail,Message
 
 app = Flask(__name__)
@@ -332,14 +332,14 @@ def add_score():
         return jsonify({"error": str(e)}), 404
 
 
-# @app.route('/query-llm', methods=['POST', 'GET'])
-# def query_llm():
-#     query = request.args.get('query')
-#     chat_history_str = request.args.get('chat_history', '[]')
-#     chat_history = json.loads(chat_history_str)  # convert chat_history into json for arg
-#     key = request.args.get('openai_api_key')
-#     response = run_query(query, chat_history, key)
-#     return jsonify(response)
+@app.route('/query-llm', methods=['POST', 'GET'])
+def query_llm():
+    query = request.args.get('query')
+    chat_history_str = request.args.get('chat_history', '[]')
+    chat_history = json.loads(chat_history_str)  # convert chat_history into json for arg
+    key = request.args.get('openai_api_key')
+    response = run_query(query, chat_history, key)
+    return jsonify(response)
 
 
 

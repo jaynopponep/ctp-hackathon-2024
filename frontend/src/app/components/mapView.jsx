@@ -95,9 +95,6 @@ const MapComponent = () => {
       >
         {isLeaderboardOpen ? <FaTimes /> : <FaBars />}
       </button>
-
-      {/* Chatbot */}
-      <Chat /> {/* Add the Chat component */}
     </div>
   );
 };

@@ -1,10 +1,10 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from sqlalchemy.orm import Session
-from sqlalchemy import select
+from sqlalchemy import select, desc
 import os
 
-from db import db, init_app, User, Option, Question, Quest  # Import models and init function
+from db import db, init_app, User, Option, Question, Quest, QuestProgress  # Import models and init function
 from llm import run_query
 
 app = Flask(__name__)
@@ -138,6 +138,19 @@ def sign_up():
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
+@app.route('/get-leaderboard', methods=['GET'])
+def get_leaderboard():
+    try:
+        sel = select(User.username, User.score).order_by(desc(User.score))
+        leaderboard = db.session.execute(sel).fetchall()
+
+        if not leaderboard:
+            return jsonify({"leaderboard": []}), 200
+        leaderboard_data = [{"username": row.username, "score": row.score} for row in leaderboard]
+        return jsonify({"leaderboard": leaderboard_data})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/get-score', methods=['GET'])
 def get_score():

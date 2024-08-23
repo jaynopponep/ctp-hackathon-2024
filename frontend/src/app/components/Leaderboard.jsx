@@ -1,14 +1,24 @@
 'use client';
-import React from 'react';
-import styles from './Leaderboard.module.css'; // Import the CSS module
-import Chat from './Chatbot'; // Import the Chat component
+import React, {useEffect, useState} from 'react';
+import styles from './Leaderboard.module.css';
+import Chat from './Chatbot';
 
 const Leaderboard = () => {
-  const players = [
-    { name: 'Jay', points: 5000 },
-    { name: 'Yared', points: 3000 },
-    { name: 'Jawad', points: 2000 },
-  ];
+    const [players, setPlayers] = useState([]);
+  useEffect(() => {
+      const getLeaderboard = async () => {
+          try {
+              let response = await fetch(`http://127.0.0.1:5000/get-leaderboard`);
+              let data = await response.json();
+              if (data.leaderboard) {
+                    setPlayers(data.leaderboard);
+                }
+      } catch (error) {
+              console.error(error.message);
+          }
+      };
+      getLeaderboard()
+  }, []);
 
   return (
     <div className={styles.wrapper}>
@@ -17,7 +27,7 @@ const Leaderboard = () => {
         <ul>
           {players.map((player, index) => (
             <li key={index} className={styles.listItem}>
-              {player.name}: {player.points} pts
+              {player.username}: {player.score} pts
             </li>
           ))}
         </ul>

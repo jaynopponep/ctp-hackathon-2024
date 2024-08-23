@@ -1,24 +1,43 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import styles from './QuestionPage.module.css'; // Import the CSS module
 
 const QuestionPage = () => {
-  const { id } = useParams(); // `id` can be string or string[]
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isCorrect, setIsCorrect] = useState(null);
   const [isCompleted, setIsCompleted] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(30);
   const [timerExpired, setTimerExpired] = useState(false);
   const [timerId, setTimerId] = useState(null);
+  const [question, setQuestion] = useState('Loading question...'); // Default state to indicate loading
+  const [optionOne, setOptionOne] = useState('Option 1');
+  const [optionTwo, setOptionTwo] = useState('Option 2');
+  const [optionThree, setOptionThree] = useState('Option 3');
+  const [optionFour, setOptionFour] = useState('Option 4');
 
-  const questionId = Array.isArray(id) ? id[0] : id;
-  console.log(questionId)
-  const correctAnswer = questionId === '1' ? 'Counseling Center' : 'Other Answer';
+  const questID = localStorage.getItem("questID");
 
   useEffect(() => {
+    const fetchQuestion = async () => {
+      try {
+        const response = await fetch(`http://127.0.0.1:5000/get-question?quest_id=${questID}`);
+        const data = await response.json();
+        if (data && data.question_title) {
+          setQuestion(data.question_title); // Set the question title
+        } else {
+          setQuestion('Question not found'); // Handle case where no question is returned
+        }
+      } catch (error) {
+        console.error('Error fetching question:', error.message);
+        setQuestion('Error loading question'); // Handle fetch error
+      }
+    };
+
+    fetchQuestion();
+
     if (timeRemaining <= 0) {
       setTimerExpired(true);
       if (timerId) {
@@ -34,7 +53,7 @@ const QuestionPage = () => {
     setTimerId(timer);
 
     return () => clearInterval(timer);
-  }, [timeRemaining]);
+  }, [timeRemaining, questID]);
 
   const handleAnswerClick = (answer) => {
     const isAnswerCorrect = answer === correctAnswer;
@@ -59,19 +78,19 @@ const QuestionPage = () => {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Question: {questionId}</h1>
+      <h1 className={styles.title}>Question</h1>
 
       <div className={styles.timer}>
         {timerExpired ? "Times up!" : `Time Remaining: ${timeRemaining} seconds`}
       </div>
 
       <div className={styles.question}>
-        {questionId === '1' ? 'Where can you find the mental health center at CCNY?' : 'Which resource provides counseling services for students at CCNY?'}
+        {question} {/* Display the question title */}
       </div>
 
       <div className={styles.imageContainer}>
         <Image
-          src={questionId === '1' ? "/images/image1.png" : "/images/image2.png"}
+          src={questID === '1' ? "/images/image1.png" : "/images/image2.png"}
           alt="Mental Health Resource"
           layout="fill"
           objectFit="cover"
@@ -80,7 +99,7 @@ const QuestionPage = () => {
       </div>
 
       <div className="grid grid-cols-2 gap-4 w-full max-w-md">
-        {questionId === '1' ? (
+        {questID === '1' ? (
           ['NAC 1-113', 'Marshak MR-3', 'ARC Library', 'NAC 7-118'].map((answer) => (
             <button
               key={answer}

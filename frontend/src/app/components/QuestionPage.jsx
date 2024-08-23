@@ -14,13 +14,10 @@ const QuestionPage = () => {
   const [timerExpired, setTimerExpired] = useState(false);
   const [timerId, setTimerId] = useState(null);
 
-  // Ensure `id` is treated as a string
   const questionId = Array.isArray(id) ? id[0] : id;
-
-  // Define the correct answer based on the question ID
+  console.log(questionId)
   const correctAnswer = questionId === '1' ? 'Counseling Center' : 'Other Answer';
 
-  // Handle timer logic
   useEffect(() => {
     if (timeRemaining <= 0) {
       setTimerExpired(true);
@@ -64,17 +61,14 @@ const QuestionPage = () => {
     <div className={styles.container}>
       <h1 className={styles.title}>Question: {questionId}</h1>
 
-      {/* Timer */}
       <div className={styles.timer}>
         {timerExpired ? "Times up!" : `Time Remaining: ${timeRemaining} seconds`}
       </div>
-      
-      {/* Test Question */}
+
       <div className={styles.question}>
         {questionId === '1' ? 'Where can you find the mental health center at CCNY?' : 'Which resource provides counseling services for students at CCNY?'}
       </div>
-      
-      {/* Image */}
+
       <div className={styles.imageContainer}>
         <Image
           src={questionId === '1' ? "/images/image1.png" : "/images/image2.png"}
@@ -84,8 +78,7 @@ const QuestionPage = () => {
           className="rounded-lg"
         />
       </div>
-      
-      {/* Answers */}
+
       <div className="grid grid-cols-2 gap-4 w-full max-w-md">
         {questionId === '1' ? (
           ['NAC 1-113', 'Marshak MR-3', 'ARC Library', 'NAC 7-118'].map((answer) => (
@@ -114,7 +107,6 @@ const QuestionPage = () => {
         )}
       </div>
 
-      {/* Mark as Completed Message */}
       {isCompleted && !timerExpired && (
         <div className={styles.completedMessage}>
           This question is marked as completed.

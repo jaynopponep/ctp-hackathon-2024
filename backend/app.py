@@ -1,15 +1,25 @@
-from flask import Flask, request, jsonify
-from llm import run_query  # Import the run_query function from llm.py. all openai stuff are handled in llm.py
-import os
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
+from sqlalchemy.orm import Session
+from sqlalchemy import select
+import os
+
+from db import db, init_app, User, Option, Question, Quest  # Import models and init function
+from llm import run_query
 
 app = Flask(__name__)
-CORS(app)  
+CORS(app)
 
+# Database configuration
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://sql5727106:kUcuNKbnJK@sql5.freesqldatabase.com:3306/sql5727106'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Initialize the database and migrations
+init_app(app)
 
 chat_history = []
 
-# Route to handle chat requests
+# Chat route
 @app.route('/api/chat', methods=['POST'])
 def chat():
     try:
@@ -25,6 +35,118 @@ def chat():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+# Application routes
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        # Handle the POST request logic here, same as before
+        pass
+
+    return render_template('host.html')
+
+@app.route('/get-options', methods=['GET'])
+def get_options():
+    try:
+        question_id = request.args.get('question_id')
+        if not question_id:
+            return render_template('get_options.html', error="Options to question not found")
+        sel = select(Option).where(Option.question_id == question_id)
+        result = db.session.execute(sel).all()
+        options = [row[0] for row in result]
+
+        options_data = [{"option_id": o.option_id, "option_text": o.option_text, "correct_bool": o.correct_bool} for o in options]
+        return jsonify(options_data)
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/get-questions', methods=['GET'])
+def get_questions():
+    try:
+        quest_id = request.args.get('quest_id')
+        if not quest_id:
+            return render_template('get_questions.html', error="Quiz not found")
+
+        sel = select(Question).where(Question.quest_id == quest_id)
+        result = db.session.execute(sel).all()
+        questions = [row[0] for row in result]
+
+        question_data = [{"question_id": q.question_id, "question_title": q.question_title} for q in questions]
+
+        return jsonify(question_data)
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/sign-up', methods=['POST'])
+def sign_up():
+    username = request.args.get('user')
+    email = request.args.get('email')
+    password = request.args.get('password')
+
+    if not username or not password or not email:
+        return "Please provide user, email, and password", 404
+    try:
+        new_user = User(username=username, email=email, password=password)
+        db.session.add(new_user)
+        db.session.commit()
+        return jsonify({"message": f"User {username} signed up successfully!"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 405
+
+@app.route('/login', methods=['GET'])
+def login():
+    username = request.args.get('user')
+    password = request.args.get('password')
+
+    if not username or not password:
+        return "Please provide both user and password", 404
+    try:
+        sel = select(User).where(User.username == username)
+        user = db.session.execute(sel).scalar_one_or_none()
+        if not user:
+            return jsonify({"Error": "User not found in DB"}), 404
+        if user.password != password:
+            return jsonify({"Error": "Incorrect password"}), 401
+        return jsonify({"message": "Login Successful!"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 405
+
+@app.route('/get-score', methods=['GET'])
+def get_score():
+    username = request.args.get('user')
+    if not username:
+        return "User retrieval error", 404
+    try:
+        sel = select(User.score).where(User.username == username)
+        user_score = db.session.execute(sel).scalar_one_or_none()
+        if not user_score:
+            return jsonify({"Error": "User not found in DB"}), 404
+        return jsonify({"score": user_score}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 405
+
+@app.route('/add-score', methods=['POST'])
+def add_score():
+    username = request.args.get('user')
+    new_score = request.args.get('score')
+
+    if not username or not new_score:
+        return "Please provide both user and score", 404
+    try:
+        new_score = int(new_score)
+        user = User.query.filter_by(username=username).first()
+        user.score += new_score if new_score else 0
+        db.session.commit()
+        return jsonify({"message": "Score added successfully!"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 404
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

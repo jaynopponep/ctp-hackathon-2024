@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import styles from './signUp.module.css';  
+import styles from './signUp.module.css';
+import SignIn from "../components/signIn";
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -10,6 +11,7 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(''); // State for handling errors
   const [errorColor, setErrorColor] = useState(''); // State for error color
+  const [userSignedUp, setUserSignedUp] = useState(false);
   const router = useRouter();
 
   const handleSignUp = async (event) => {
@@ -18,7 +20,7 @@ const SignUp = () => {
     setErrorColor(''); // Reset error color
 
     try {
-      const response = await fetch(`http://localhost:5000/sign-up?user=${username}&email=${email}&password=${password}`, {
+      const response = await fetch(`http://127.0.0.1:5000/sign-up?user=${username}&email=${email}&password=${password}`, {
         method: 'GET', // Using GET as per the provided documentation
       });
 
@@ -26,7 +28,7 @@ const SignUp = () => {
 
       if (response.ok) {
         console.log('Sign-Up Successful');
-        router.push('/'); // Navigate to the homepage after sign-up
+        setUserSignedUp(true);
       } else {
         setError(data.error || 'Sign-up failed. Please try again.');
         setErrorColor(response.status >= 500 ? 'orange' : 'red'); // Set color based on status code
@@ -37,6 +39,10 @@ const SignUp = () => {
       setErrorColor('orange'); // Set color for unexpected errors
     }
   };
+
+  if (userSignedUp) {
+    return <SignIn />;
+  }
 
   return (
     <Box

@@ -7,7 +7,6 @@ import Notif_shepard from './notif_shepard';
 import Notif_nac from './notif_nac';
 import Leaderboard from './Leaderboard';
 import LoadingSpinner from './LoadingSpinner';
-import Chat from './Chatbot'; // Import the Chat component
 import { FaBars, FaTimes } from 'react-icons/fa';
 import styles from './QuestUI.module.css';
 import leaderboardStyles from './Leaderboard.module.css';

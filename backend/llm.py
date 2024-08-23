@@ -13,6 +13,8 @@ import random
 ##loading my environment variables (openai key)
 from dotenv import load_dotenv 
 load_dotenv()
+#env_path = os.path.join(os.path.dirname(__file__), '.env')
+#load_dotenv(dotenv_path=env_path)
 
 ## loading the API key through an ENV file 
 openai_api_key = os.getenv('OPENAI_API_KEY')

@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react';
 import SignIn from './signIn';
-import SignUp from './signUp';  
+import SignUp from './signUp';
 
 const AerialView = () => {
   const [isSignUp, setIsSignUp] = useState(false);  // State to toggle between SignIn and SignUp
@@ -73,7 +73,7 @@ const AerialView = () => {
         )}
         <div style={{ textAlign: 'center', marginTop: '10px' }}>
           {isSignUp ? (
-            <p style={{ textShadow: '10px 15px 15px rgba(0, 0, 0, 0.9)' }}> 
+            <p style={{ textShadow: '10px 15px 15px rgba(0, 0, 0, 0.9)' }}>
               Already have an account?{' '}
               <span
                 onClick={() => setIsSignUp(false)}
@@ -86,7 +86,7 @@ const AerialView = () => {
               </span>
             </p>
           ) : (
-            <p style={{ textShadow: '10px 15px 15px rgba(0, 0, 0, 0.9)' }}> 
+            <p style={{ textShadow: '10px 15px 15px rgba(0, 0, 0, 0.9)' }}>
               Don't have an account?{' '}
               <span
                 onClick={() => setIsSignUp(true)}

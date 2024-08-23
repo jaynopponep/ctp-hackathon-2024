@@ -186,28 +186,6 @@ def quest_progress():
         return jsonify({'error': 'No progress found for this quest and user'}), 404
 
 
-@app.route('/get-quest-progress',methods=['GET'])
-#Retrieve the progress and completion status of a specific quest for a user based on quest_id and user_id
-def quest_progress():
-    user_id = request.args.get('user_id')
-    quest_id = request.args.get('quest_id')
-    if not user_id or quest_id:
-        return jsonify({'error': 'User ID & Quest ID is required, check params'}),400
-    try:
-        user_id = int(user_id)
-    except ValueError:
-        return jsonify({'error': 'Invalid User ID format'}), 400
-    progress = QuestProgress.query.filter_by(user_id=user_id, quest_id=quest_id).first()
-    if progress:
-        return jsonify({
-            'quest_id': quest_id,
-            'user_id': user_id,
-            'progress': progress.progress,
-            'completed': progress.completed
-        }), 200
-    else:
-        return jsonify({'error':'No progress found for this quest and user'}),404
-
 @app.route('/update-quest-progress',methods=['POST'])  # Update or create quest progress and completion status for a user
 def update_progress():
     quest_id = request.args.get('quest_id')

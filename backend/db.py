@@ -34,7 +34,7 @@ class Option(db.Model):
     option_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     question_id = db.Column(db.Integer, db.ForeignKey('questions.question_id'), nullable=False)
     option_text = db.Column(db.String(255), nullable=False)
-    correct_bool = db.Column(db.String(255), nullable=False)
+    correct_bool = db.Column(db.Integer, nullable=False) # correct based on 0/1 for true/false
     question = db.relationship('Question', backref=db.backref('options', lazy=True))
 
 class Question(db.Model):
@@ -63,28 +63,28 @@ class QuestProgress(db.Model):
     progress_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     quest_id = db.Column(db.Integer, db.ForeignKey('quests.quest_id'), nullable=False)
-    progress = db.Column(db.Integer, default=0)
-    completed = db.Column(db.Boolean, default=False)
+    progress = db.Column(db.Integer, default=0) # range 0-100
+    completed = db.Column(db.Integer, default=False) # completion based on 1/0 boolean
     user = db.relationship('User', backref=db.backref('quest_progress', lazy=True))
     quest = db.relationship('Quest', backref=db.backref('quest_progress', lazy=True))
 
 
 @app.route('/get-quest-progress',methods=['GET'])
-#Retrieve the progress and completion status of a specific quest for a user based on quest_id and user_id
+# Retrieve the progress and completion status of a specific quest for a user based on quest_id and user_id
 def quest_progress():
     user_id = request.args.get('user_id')
     quest_id = request.args.get('quest_id')
-    if not user_id or quest_id:
+    if not user_id or not quest_id:
         return jsonify({'error': 'User ID & Quest ID is required, check params'}),400
     try:
         user_id = int(user_id)
     except ValueError:
         return jsonify({'error': 'Invalid User ID format'}), 400
+    # error handle for user id input^
     progress=QuestProgress.query.filter_by(user_id=user_id, quest_id=quest_id).first()
 
     if progress:
         return jsonify({
-            'quest_id': quest_id,
             'user_id': user_id,
             'progress': progress.progress,
             'completed': progress.completed
@@ -92,13 +92,13 @@ def quest_progress():
     else:
         return jsonify({'error':'No progress found for this quest and user'}),404
 
-@app.route('/update-quest-progress',methods=['POST'])#Update or create quest progress and completion status for a user
+@app.route('/update-quest-progress',methods=['POST'])
+# Update or create quest progress and completion status for a user
 def update_progress():
     quest_id = request.args.get('quest_id')
-    data = request.json
-    user_id = data.get('user_id')
-    progress_value = data.get('progress')
-    completed = data.get('completed', False)
+    user_id = request.args.get('user_id')
+    progress_value = request.args.get('progress')
+    completed = request.args.get('completed')
 
     if not user_id or progress_value is None:
         return jsonify({'error': 'User ID and progress value are required'}), 400
@@ -122,7 +122,8 @@ def update_progress():
 
     }), 200
 
-@app.route('/get-completion', methods=['GET'])# Calculate and return the percentage of completed quests for a specific user
+@app.route('/get-completion', methods=['GET'])
+# Calculate and return the percentage of completed quests for a specific user
 def completion_percentage():
     user_id = request.args.get('user_id')
     total_quests = Quest.query.count()

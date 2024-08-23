@@ -52,3 +52,23 @@ Retrieving answer choices/options requires the question id.</br>
 host/get-options?question_id=<question-id-here>
 ```
 
+### Get quest progress
+Retrieve user ID, progress (%), completed (0/1 for true/false) by submitting params user_id and quest_id</br>
+Write endpoints like so:
+```
+host/get-quest-progress?user_id=<USER ID HERE>&quest_id=<QUEST ID HERE>
+```
+
+### Update quest progress
+Requires params quest_id, user_id, progress, and completed to update a user's progress</br>
+Write endpoints like so:
+```
+host/update-quest-progress?quest_id=<QUEST ID HERE>&user_id=<USER ID HERE>&progress=<PROGRESS HERE>&completed=<COMPLETION % HERE>
+```
+Note that the progress and completed params are OVERWRITING not INCREMENTING (as requested).
+### Get completion percentage
+Requires only user ID to retrieve total quests done, completed quests and completion percentage</br>
+```
+host/get-completion?user_id=<USER ID HERE>
+```
+

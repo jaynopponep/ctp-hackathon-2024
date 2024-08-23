@@ -1,13 +1,13 @@
-'use client'
+'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Leaderboard from './Leaderboard';
 import LoadingSpinner from './LoadingSpinner';
-import { FaBars, FaTimes } from 'react-icons/fa'; // Importing icons
+import { FaBars, FaTimes, FaSignOutAlt } from 'react-icons/fa'; // Import logout icon
 import styles from './QuestUI.module.css'; // Import the CSS module
+import Chat from './Chatbot'; // Import the Chat component
 
-//INTERACTIBILITY
 const QuestUI = () => {
   const [loading, setLoading] = useState(false);
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(true); // State to toggle sidebar
@@ -29,8 +29,30 @@ const QuestUI = () => {
     '2': 300,
   };
 
+  // Calculate number of quests
+  const numberOfQuests = Object.keys(questPoints).length;
+
+  const handleLogout = () => {
+    // Implement your logout logic here, e.g., clearing authentication tokens
+    // For example, if you're using local storage:
+    localStorage.removeItem('authToken'); // Example
+    router.push('/login'); // Redirect to login page after logout
+  };
+
   return (
     <div className={styles.container}>
+      {/* Embed Google Maps as a background */}
+      <div className={styles.mapContainer}>
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!4v1724212290027!6m8!1m7!1s-cNi2XrxhmsDxBQGJf1RVg!2m2!1d40.81990719275363!2d-73.94971700126423!3f121.21949117718205!4f6.513249207011086!5f0.7820865974627469"
+          frameBorder="0"
+          style={{ border: 0, width: '100%', height: '100%' }}
+          allowFullScreen
+          aria-hidden="false"
+          tabIndex="0"
+        ></iframe>
+      </div>
+
       {/* Loading Spinner */}
       {loading && <LoadingSpinner />}
 
@@ -64,7 +86,15 @@ const QuestUI = () => {
         >
           <FaTimes />
         </button>
+
         <Leaderboard />
+
+        <button
+          onClick={handleLogout}
+          className={styles.logoutButton}
+        >
+          <FaSignOutAlt /> Logout
+        </button>
       </div>
 
       {/* Open Leaderboard Button */}
@@ -76,6 +106,8 @@ const QuestUI = () => {
           <FaBars />
         </button>
       )}
+
+      <Chat />
     </div>
   );
 };

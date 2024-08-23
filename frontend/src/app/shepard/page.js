@@ -4,6 +4,7 @@ import Marshak from '../components/marshakView'; //rendered all google maps comp
 import Nac from '../components/nacView'
 import SophieDavis from '../components/sophieDavisView'
 import Shepard from '../components/shepardView.jsx'
+import BackButton from './../components/backButton';
 
 export default function Map() {
   return (
@@ -12,6 +13,7 @@ export default function Map() {
       <div style={{ position: 'relative', zIndex: 1, color: 'white', textAlign: 'center', paddingTop: '20vh' }}>
         <h1>About Us</h1>
         <p>This is the About page of the project.</p>
+        <BackButton />
       </div>
     </div>
   );

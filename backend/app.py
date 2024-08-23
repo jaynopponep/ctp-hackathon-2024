@@ -239,15 +239,13 @@ def completion_percentage():
 
     if total_quests == 0:
         return jsonify({'error': 'No quests found'}), 404
-    completed_quests = QuestProgress.query.filter_by(user_id=user_id, completed=True).distinct(
-        QuestProgress.quest_id).count()
+    completed_quests = QuestProgress.query.filter_by(user_id=user_id, completed=True).distinct(QuestProgress.quest_id).count()
     completion_percentage = (completed_quests / total_quests) * 100
     return jsonify({
         'user_id': user_id,
         'total_quests': total_quests,
         'completed_quests': completed_quests,
         'completion_percentage': completion_percentage}), 200
-
-
+  
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

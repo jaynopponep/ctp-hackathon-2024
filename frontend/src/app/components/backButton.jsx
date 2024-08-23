@@ -9,14 +9,14 @@ const BackButton = () => {
     <Link href="/map" 
       style={{
         position: 'absolute',
-        top: '20px',
-        left: '20px',
+        top: '8px',
+        left: '-5px',
+        padding: '15px',
         cursor: 'pointer',
-        padding: '30px', // Increase padding for a larger button
         zIndex: 2, // Ensure it appears on top
-        backgroundColor: 'rgba(34, 139, 34, 0.8)',
+        backgroundColor: 'rgb(109, 40, 134)',
         color: 'white', 
-        borderRadius: '8px', // Slightly larger border radius
+        borderRadius: '18px', // Slightly larger border radius
         textDecoration: 'none', // Remove underline
         display: 'flex', // Align icon and text
         alignItems: 'center', // Center align icon and text

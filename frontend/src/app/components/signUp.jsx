@@ -1,20 +1,41 @@
 'use client'
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import styles from './signUp.module.css';  // Import your module CSS (you can reuse signIn.module.css or create a new one)
+import styles from './signUp.module.css';  
 
-const SignUp = ({ theme }) => {
+const SignUp = () => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(''); // State for handling errors
+  const [errorColor, setErrorColor] = useState(''); // State for error color
   const router = useRouter();
 
-  const handleSignUp = (event) => {
+  const handleSignUp = async (event) => {
     event.preventDefault();
-    console.log("Sign-Up Simulated");
-    router.push('/'); // Navigate to the homepage after sign-up
+    setError(''); // Reset error before new attempt
+    setErrorColor(''); // Reset error color
+
+    try {
+      const response = await fetch(`http://localhost:5000/sign-up?user=${username}&email=${email}&password=${password}`, {
+        method: 'GET', // Using GET as per the provided documentation
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log('Sign-Up Successful');
+        router.push('/'); // Navigate to the homepage after sign-up
+      } else {
+        setError(data.error || 'Sign-up failed. Please try again.');
+        setErrorColor(response.status >= 500 ? 'orange' : 'red'); // Set color based on status code
+      }
+    } catch (err) {
+      console.error('Sign-Up Error:', err);
+      setError('Something went wrong. Please try again later.');
+      setErrorColor('orange'); // Set color for unexpected errors
+    }
   };
 
   return (
@@ -37,6 +58,15 @@ const SignUp = ({ theme }) => {
       >
         Create an account to get started.
       </Typography>
+      {error && (
+        <Typography
+          variant="body1"
+          style={{ color: 'blue' }} // Apply the error color here
+          className={styles.error}
+        >
+          {error}
+        </Typography>
+      )}
       <TextField
         label="Email"
         variant="outlined"
@@ -46,7 +76,15 @@ const SignUp = ({ theme }) => {
         onChange={(e) => setEmail(e.target.value)}
         className={styles.input}
       />
-      
+      <TextField
+        label="Username"
+        variant="outlined"
+        fullWidth
+        margin="normal"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        className={styles.input}
+      />
       <TextField
         label="Password"
         type="password"

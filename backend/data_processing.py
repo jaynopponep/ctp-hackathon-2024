@@ -16,7 +16,7 @@ current_dir = os.getcwd()
 file_path = os.path.join(current_dir, 'data', 'CCNY_Health_Wellness_Services.csv')
 
 load_dotenv()
-persist_directory = 'db'
+persist_directory = 'chromadb'
 raw_documents = loader = CSVLoader(file_path=file_path).load()  # Load PDFs from folder
 if not raw_documents:
     raise ValueError("No documents found. Ensure the document loading is correct.")

@@ -14,7 +14,7 @@ const NotificationBox = ({ onSwitch }) => {
         style={styles.icon}
       />
       <p style={{ color: '#335' }}>
-        Hello testing
+        You have x Quests Available
       </p>
     </div>
   );

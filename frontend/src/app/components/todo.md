@@ -1,0 +1,5 @@
+- [ ] split quest ui and leaderboard react components
+- [ ] ensure each of the buildings has the expandible for leaderboard and rag (call leaderboard component)
+- [ ] quests should remain tied to on button click state for the notif box
+- [ ] fix routing for quests and all logic with that. will discuss with jay when i meet up with him soon.
+- [ ] fix back button component

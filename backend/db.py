@@ -47,6 +47,16 @@ class Location(db.Model):
     location_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False)
 
+class QuestProgress(db.Model):
+    __tablename__ = 'quest_progress'
+    progress_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    quest_id = db.Column(db.Integer, db.ForeignKey('quests.quest_id'), nullable=False)
+    progress = db.Column(db.Integer, default=0)
+    completed = db.Column(db.Integer, default=0) # (yes/no is 1/0)
+    user = db.relationship('User', backref=db.backref('quest_progress', lazy=True))
+    quest = db.relationship('Quest', backref=db.backref('quest_progress', lazy=True))
+
 def init_app(app):
     db.init_app(app)
     migrate.init_app(app, db)

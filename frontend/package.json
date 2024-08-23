@@ -24,6 +24,7 @@
     "@types/node": "22.5.0",
     "@types/react": "18.3.4",
     "eslint": "^8",
-    "eslint-config-next": "^0.2.4"
+    "eslint-config-next": "^0.2.4",
+    "typescript": "5.5.4"
   }
 }

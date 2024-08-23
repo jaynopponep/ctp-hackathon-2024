@@ -1,5 +1,5 @@
 import React from 'react';
-import ConstantView from './components/constantView';
+import ConstantView from './components/mapView';
 import AerialView from './components/arialView';
 import EmbedView from './components/marshakView';
 

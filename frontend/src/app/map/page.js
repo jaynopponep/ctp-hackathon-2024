@@ -1,23 +1,20 @@
 'use client';
-import React, { useState } from 'react';
+
+import React from 'react';
 import Marshak from '../components/marshakView';
 import Nac from '../components/nacView';
 import SophieDavis from '../components/sophieDavisView';
-import Shepard from '../components/shepardView.jsx';
+import Shepard from '../components/shepardView';
 import NotificationBox from '../components/notification_box';
-import QuestUI from '../components/questUI'; // Import your QuestUI component
+import MapComponent from '../components/mapView';
 
-export default function Map() {
-  const [showQuestUI, setShowQuestUI] = useState(false);
-
-  const handleSwitch = () => {
-    setShowQuestUI(true);
-  };
-
+const MapPage = () => {
   return (
-    <div style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
-      <Marshak /> {/* Google Maps as background */}
-
+    <div>
+      <MapComponent />
     </div>
+    
   );
-}
+};
+
+export default MapPage;

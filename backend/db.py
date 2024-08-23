@@ -69,20 +69,15 @@ class QuestProgress(db.Model):
     quest = db.relationship('Quest', backref=db.backref('quest_progress', lazy=True))
 
 
-
-
-
-@app.route('/quest/<int:quest_id>/progress',methods=['GET'])#Retrieve and return the progress and completion status of a specific quest for a user based on quest_id and user_id
-def quest_progress(quest_id):
-    user_id=request.args.get('user_id')
-
-    if not user_id:
-        return jsonify({'error': 'User ID is required'}),400
-    
-
+@app.route('/get-quest-progress',methods=['GET'])
+#Retrieve the progress and completion status of a specific quest for a user based on quest_id and user_id
+def quest_progress():
+    user_id = request.args.get('user_id')
+    quest_id = request.args.get('quest_id')
+    if not user_id or quest_id:
+        return jsonify({'error': 'User ID & Quest ID is required, check params'}),400
     try:
         user_id = int(user_id)
-
     except ValueError:
         return jsonify({'error': 'Invalid User ID format'}), 400
     progress=QuestProgress.query.filter_by(user_id=user_id, quest_id=quest_id).first()
@@ -97,11 +92,9 @@ def quest_progress(quest_id):
     else:
         return jsonify({'error':'No progress found for this quest and user'}),404
 
-
-
-
-@app.route('/quest/<int:quest_id>/progress',methods=['POST'])#Update or create quest progress and completion status for a user
-def update_progress(quest_id):
+@app.route('/update-quest-progress',methods=['POST'])#Update or create quest progress and completion status for a user
+def update_progress():
+    quest_id = request.args.get('quest_id')
     data = request.json
     user_id = data.get('user_id')
     progress_value = data.get('progress')
@@ -118,7 +111,6 @@ def update_progress(quest_id):
     else:
         progress = QuestProgress(user_id=user_id, quest_id=quest_id, progress=progress_value, completed=completed)
         db.session.add(progress)
-
     db.session.commit()
 
     return jsonify({
@@ -128,27 +120,22 @@ def update_progress(quest_id):
         'progress': progress.progress,
         'completed': progress.completed
 
-
     }), 200
 
-
-@app.route('/user/<int:user_id>/completion_percentage', methods=['GET'])# Calculate and return the percentage of completed quests for a specific user
-def completion_percentage(user_id):
+@app.route('/get-completion', methods=['GET'])# Calculate and return the percentage of completed quests for a specific user
+def completion_percentage():
+    user_id = request.args.get('user_id')
     total_quests = Quest.query.count()
     
     if total_quests == 0:
         return jsonify({'error': 'No quests found'}), 404
-
     completed_quests = QuestProgress.query.filter_by(user_id=user_id, completed=True).distinct(QuestProgress.quest_id).count()
     completion_percentage = (completed_quests / total_quests) * 100
-
     return jsonify({
         'user_id':user_id,
         'total_quests': total_quests,
         'completed_quests':completed_quests,
         'completion_percentage': completion_percentage}), 200
-
-
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -340,10 +327,6 @@ def query_llm():
     key = request.args.get('openai_api_key')
     response = run_query(query, chat_history, key)
     return jsonify(response)
-
-
-
-
 
 # Sample API call:
 # http://127.0.0.1:5000/query-llm?query="Where is the CCNY mental health center?"&

@@ -1,0 +1,133 @@
+.container {
+    display: flex;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden; 
+  }
+  
+  .mapContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /*background*/
+  }
+  
+  .questList {
+    position: fixed;
+    top: 1rem; 
+    left: 0rem; 
+    z-index: 90; 
+    background-color: rgba(255, 255, 255, 0); 
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem; 
+    margin-top: 2rem; 
+  }
+  
+  .questCard {
+    max-width: 28rem;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: rgba(224, 193, 254, 0.6);
+  }
+  
+  .questTitle {
+    font-size: 1.5rem;
+    color: #000;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .questItem {
+    background-color: rgba(169, 86, 246, 0.474); 
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .questPoints {
+    background-color: rgba(255, 255, 255, 0.539); /* Slightly transparent white background */
+    color: #6b21a8;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  
+  .leaderboardSidebar {
+    transform: translateX(0);
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 25%;
+    height: 100%;
+    background-color: rgba(214, 188, 252, 0.331);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    padding: 2rem;
+    border-left: 1px solid rgba(209, 213, 219, 0.2); 
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .leaderboardSidebarClosed {
+    transform: translateX(100%);
+  }
+  
+  .openLeaderboardButton {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background-color: rgb(169, 86, 246); 
+    color: #fff;
+    padding: 0.5rem;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    outline: none;
+  }
+  
+  .questCountContainer {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background-color: rgba(232, 213, 255, 0.441); 
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .questCountText {
+    font-size: 1rem;
+    color: #000000;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .logoutButton {
+    margin-top: auto;
+    background-color: rgba(232, 213, 255, 0.345); 
+    color: #000000;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  

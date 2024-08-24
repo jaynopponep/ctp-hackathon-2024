@@ -1,17 +1,30 @@
-'use client'
-import React from 'react';
-import Nac from '../components/nacView'
-import BackButton from './../components/backButton';
+'use client';
+import React, { useState } from 'react';
+import Nac from '../components/nacView';
+import NotificationBox from '../components/notification_box';
+import NacQuestUI from '../components/NacQuestUI'; // Import using the capitalized name
+import BackButton from '../components/BackButton';
 
 export default function Map() {
+  const [showQuestUI, setShowQuestUI] = useState(false);
+
+  const handleSwitch = () => {
+    setShowQuestUI(true);
+  };
+
+  const handleCloseQuestUI = () => {
+    setShowQuestUI(false);
+  };
+
   return (
     <div style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
-      <Nac /> {/* Google Maps as background */}
-      <div style={{ position: 'relative', zIndex: 1, color: 'white', textAlign: 'center', paddingTop: '20vh' }}>
-        <h1>About Us</h1>
-        <p>This is the About page of the project.</p>
-        <BackButton />
-      </div>
+      <BackButton />
+      <Nac />
+      {!showQuestUI ? (
+        <NotificationBox onSwitch={handleSwitch} />
+      ) : (
+        <NacQuestUI onClose={handleCloseQuestUI} /> // Use the capitalized component name
+      )}
     </div>
   );
 }

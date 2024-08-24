@@ -1,18 +1,33 @@
-'use client'
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 import SophieDavis from '../components/sophieDavisView'
-
-import BackButton from '../components/backButton.jsx';
+import NotificationBox from '../components/notification_box';
+import SophieDavisQuestUI from '../components/sophieDavisQuestUI'; // Import using the capitalized name
+import BackButton from '../components/BackButton';
 
 export default function Map() {
+  const [showQuestUI, setShowQuestUI] = useState(false);
+
+  const handleSwitch = () => {
+    setShowQuestUI(true);
+  };
+
+  const handleCloseQuestUI = () => {
+    setShowQuestUI(false);
+  };
+
   return (
     <div style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
-      <SophieDavis /> 
-      <div style={{ position: 'relative', zIndex: 1, color: 'white', textAlign: 'center', paddingTop: '20vh' }}>
-        <h1>About Us</h1>
-        <p>This is the About page of the project.</p>
-      </div>
       <BackButton />
+      <SophieDavis />
+      {!showQuestUI ? (
+        <NotificationBox onSwitch={handleSwitch} />
+      ) : (
+        <SophieDavisQuestUI onClose={handleCloseQuestUI} /> // Use the capitalized component name
+      )}
     </div>
   );
 }
+
+
+//import SophieDavis from '../components/sophieDavisView'

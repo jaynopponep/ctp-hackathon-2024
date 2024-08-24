@@ -141,6 +141,7 @@ def sign_up():
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
+
 @app.route('/get-leaderboard', methods=['GET'])
 def get_leaderboard():
     try:
@@ -154,6 +155,7 @@ def get_leaderboard():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+
 
 @app.route('/get-score', methods=['GET'])
 def get_score():

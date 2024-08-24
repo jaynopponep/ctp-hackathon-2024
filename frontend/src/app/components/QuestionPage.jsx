@@ -21,72 +21,77 @@ const QuestionPage = () => {
   const questID = localStorage.getItem("questID");
 
   useEffect(() => {
-    const fetchQuestion = async () => {
-      try {
-        const response = await fetch(`http://127.0.0.1:5000/get-questions?${questID}`);
-        const data = await response.json();
-        if (Array.isArray(data) && data.length > 0) {
-          const firstQuestion = data[0];
-          setQuestion(firstQuestion.question_title);
-        } else {
-          setQuestion('Question not found');
-        }
-      } catch (error) {
-        console.error('Error fetching question:', error.message);
-        setQuestion('Error loading question');
-      }
-    };
+  const fetchQuestion = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/get-questions-set?quest_id=${questID}`);
+      const data = await response.json();
 
-    fetchQuestion();
+      const questionText = Object.keys(data)[0];
+      const options = data[questionText];
 
-    if (timeRemaining <= 0) {
-      setTimerExpired(true);
-      if (timerId) {
-        clearInterval(timerId);
-      }
-      return;
+      setQuestion(questionText);
+      setOptionOne(options[0]);
+      setOptionTwo(options[1]);
+      setOptionThree(options[2]);
+      setOptionFour(options[3]);
+
+    } catch (error) {
+      console.error('Error fetching question:', error.message);
+      setQuestion('Error loading question');
     }
-
-    const timer = setInterval(() => {
-      setTimeRemaining((prevTime) => prevTime - 1);
-    }, 1000);
-
-    setTimerId(timer);
-
-    return () => clearInterval(timer);
-  }, [timeRemaining, questID]);
-
-  const handleAnswerClick = (answer) => {//choice handler for quests
-    const isAnswerCorrect = answer === correctAnswer;
-    setSelectedAnswer(answer);
-    setIsCorrect(isAnswerCorrect);
-
-    if (isAnswerCorrect) {
-      setIsCompleted(true);
-      setTimerExpired(true);
-      if (timerId) {
-        clearInterval(timerId);
-      }
-    } else {
-      setIsCompleted(false);
-    }
-
-    setTimeout(() => {
-      setSelectedAnswer(null);
-      setIsCorrect(null);
-    }, 1000);
   };
 
-  return ( //choice handler
+  fetchQuestion();
+
+  if (timeRemaining <= 0) {
+    setTimerExpired(true);
+    if (timerId) {
+      clearInterval(timerId);
+    }
+    return;
+  }
+
+  const timer = setInterval(() => {
+    setTimeRemaining((prevTime) => prevTime - 1);
+  }, 1000);
+
+  setTimerId(timer);
+
+  return () => clearInterval(timer);
+}, [timeRemaining, questID]);
+
+
+  const handleAnswerClick = (answer) => {
+  const isAnswerCorrect = answer === correctAnswer;
+  setSelectedAnswer(answer);
+  setIsCorrect(isAnswerCorrect);
+
+  if (isAnswerCorrect) {
+    setIsCompleted(true);
+    setTimerExpired(true);
+    if (timerId) {
+      clearInterval(timerId);
+    }
+  } else {
+    setIsCompleted(false);
+  }
+
+  setTimeout(() => {
+    setSelectedAnswer(null);
+    setIsCorrect(null);
+  }, 1000);
+};
+
+  return (
     <div className={styles.container}>
       <h1 className={styles.title}>Question</h1>
 
-      <div className={styles.timer}> 
-        {timerExpired ? "Times up!" : `Time Remaining: ${timeRemaining} seconds`} 
-      </div> 
+      <div className={styles.timer}>
+        {timerExpired ? "Times up!" : `Time Remaining: ${timeRemaining} seconds`}
+      </div>
 
       <div className={styles.question}>
-        {question} {/* Display the question title */}
+        {question} {}
       </div>
 
       <div className={styles.imageContainer}>

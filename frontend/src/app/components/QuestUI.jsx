@@ -1,60 +1,33 @@
 'use client';
-
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Leaderboard from './Leaderboard';
 import LoadingSpinner from './LoadingSpinner';
-import { FaBars, FaTimes, FaSignOutAlt } from 'react-icons/fa'; 
-import styles from './QuestUI.module.css'; 
-import Chat from './Chatbot'; 
-
+import { FaBars, FaTimes, FaSignOutAlt } from 'react-icons/fa';
+import styles from './QuestUI.module.css';
+import Chat from './Chatbot';
 const QuestUI = () => {
   const [loading, setLoading] = useState(false);
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(true);
   const router = useRouter();
-<<<<<<< Updated upstream
-
-  const handleLinkClick = (event, path) => {
-    event.preventDefault(); // Prevent default link behavior
-    setLoading(true); // Show loading spinner
-
-
+  const handleLinkClick = (event, path, questId) => {
+    event.preventDefault();
+    setLoading(true);
     setTimeout(() => {
-      router.push(path); // Redirect to the question page
-    }, 500); 
+      router.push(path);
+      localStorage.setItem("questID", questId)
+    }, 500);
   };
-
-  // Define points for each question
-=======
->>>>>>> Stashed changes
   const questPoints = {
     '1': 200,
     '2': 300,
   };
-
   const numberOfQuests = Object.keys(questPoints).length;
-
-<<<<<<< Updated upstream
   const handleLogout = () => { //logout handler
-    localStorage.removeItem('authToken'); 
-=======
-  // actual functions:
-  const handleLinkClick = (event, path, questID) => {
-    event.preventDefault();
-    setLoading(true);
-
-    setTimeout(() => {
-      router.push(path);
-      localStorage.setItem("questID", questID);
-    }, 500);
-  };
-
-  const handleLogout = () => {
->>>>>>> Stashed changes
+    localStorage.removeItem('authToken');
     localStorage.removeItem("username");
-    router.push('/');
+    router.push('/'); // redir to login page after logout
   };
-
   return (
     <div className={styles.container}>
       <div className={styles.mapContainer}>
@@ -66,10 +39,7 @@ const QuestUI = () => {
           tabIndex="0"
         ></iframe>
       </div>
-
       {loading && <LoadingSpinner />}
-
-      {/* Quest List with Routing */}
       <div className={styles.questList}>
         <div className={styles.questCard}>
           <h2 className={styles.questTitle}>Available Quests:</h2>
@@ -77,9 +47,9 @@ const QuestUI = () => {
             {Object.keys(questPoints).map((id) => (
               <a
                 key={id}
-                href={`/questionID`}
+                href={`/questionID/1`}
                 className={styles.questItem}
-                onClick={(e) => handleLinkClick(e, `/questionID`, id)}
+                onClick={(e) => handleLinkClick(e, `/questionID/1`, id)}
               >
                 <span>Quest {id}: Mental Health Question {id}</span>
                 <span className={styles.questPoints}>
@@ -90,8 +60,7 @@ const QuestUI = () => {
           </div>
         </div>
       </div>
-
-      {/* Leaderboard Sidebar */}
+      {/* leaderboard section */}
       <div className={`${styles.leaderboardSidebar} ${!isLeaderboardOpen ? styles.leaderboardSidebarClosed : ''}`}>
         <button
           onClick={() => setIsLeaderboardOpen(false)}
@@ -99,9 +68,7 @@ const QuestUI = () => {
         >
           <FaTimes />
         </button>
-
         <Leaderboard />
-
         <button
           onClick={handleLogout}
           className={styles.logoutButton}
@@ -109,8 +76,7 @@ const QuestUI = () => {
           <FaSignOutAlt /> Logout
         </button>
       </div>
-
-      {/* Open Leaderboard Button */}
+      {/* open leaderboard button (top-right */}
       {!isLeaderboardOpen && (
         <button
           onClick={() => setIsLeaderboardOpen(true)}
@@ -119,10 +85,8 @@ const QuestUI = () => {
           <FaBars />
         </button>
       )}
-
       <Chat />
     </div>
   );
 };
-
 export default QuestUI;

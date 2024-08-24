@@ -10,8 +10,8 @@ const Notif_shepard = () => {//notification icon on /shepard
     <Link href="/shepard" 
       style={{
         position: 'absolute',
-        top: '120px',
-        right: '480px',
+        top: '160px',
+        right: '580px',
         cursor: 'pointer',
         padding: '10px',
         zIndex: 1,

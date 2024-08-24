@@ -10,8 +10,8 @@ const Notif_marshak = () => { //notification icon on /marshak
     <Link href="/marshak" 
       style={{
         position: 'absolute',
-        bottom: '130px',
-        right: '590px',
+        bottom: '200px',
+        right: '860px',
         cursor: 'pointer',
         padding: '10px',
         zIndex: 1,

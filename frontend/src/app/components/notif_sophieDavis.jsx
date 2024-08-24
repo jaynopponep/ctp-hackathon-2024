@@ -11,7 +11,7 @@ const Notif_sd = () => { //notification icon for /sophie_davis
       style={{
         position: 'absolute',
         top: '15px',
-        left: '449px',
+        left: '660px',
         cursor: 'pointer',
         padding: '10px',
         zIndex: 1,

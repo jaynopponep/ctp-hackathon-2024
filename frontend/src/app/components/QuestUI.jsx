@@ -12,21 +12,6 @@ const QuestUI = () => {
   const [loading, setLoading] = useState(false);
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(true);
   const router = useRouter();
-<<<<<<< Updated upstream
-
-  const handleLinkClick = (event, path) => {
-    event.preventDefault(); // Prevent default link behavior
-    setLoading(true); // Show loading spinner
-
-
-    setTimeout(() => {
-      router.push(path); // Redirect to the question page
-    }, 500); 
-  };
-
-  // Define points for each question
-=======
->>>>>>> Stashed changes
   const questPoints = {
     '1': 200,
     '2': 300,
@@ -34,10 +19,6 @@ const QuestUI = () => {
 
   const numberOfQuests = Object.keys(questPoints).length;
 
-<<<<<<< Updated upstream
-  const handleLogout = () => { //logout handler
-    localStorage.removeItem('authToken'); 
-=======
   // actual functions:
   const handleLinkClick = (event, path, questID) => {
     event.preventDefault();
@@ -50,7 +31,6 @@ const QuestUI = () => {
   };
 
   const handleLogout = () => {
->>>>>>> Stashed changes
     localStorage.removeItem("username");
     router.push('/');
   };
@@ -125,4 +105,4 @@ const QuestUI = () => {
   );
 };
 
-export default QuestUI;
+default export QuestUI;

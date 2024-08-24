@@ -66,19 +66,22 @@ def get_options():
         return jsonify({'error': str(e)}), 500
 
 
-@app.route('/get-questions', methods=['GET'])
+@app.route('/get-questions-set', methods=['GET'])
 def get_questions():
     try:
         quest_id = request.args.get('quest_id')
         if not quest_id:
             return render_template('get_questions.html', error="Quiz not found")
 
-        sel = select(Question).where(Question.quest_id == quest_id)
+        sel=select(Question.question_title, Option.option_text).join(Option, Option.question_id == Question.question_id).where(Question.quest_id == quest_id)
         result = db.session.execute(sel).all()
-        questions = [row[0] for row in result]
 
-        question_data = [{"question_id": q.question_id, "question_title": q.question_title} for q in questions]
-
+        question_data={}
+        for row in result:
+            question_title, option_text=row
+            if question_title not in question_data:
+                question_data[question_title]=[]
+            question_data[question_title].append(option_text)
         return jsonify(question_data)
 
     except Exception as e:

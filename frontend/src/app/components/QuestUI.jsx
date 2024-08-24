@@ -10,8 +10,9 @@ import Chat from './Chatbot';
 
 const QuestUI = () => {
   const [loading, setLoading] = useState(false);
-  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(true); // State to toggle sidebar
+  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(true);
   const router = useRouter();
+<<<<<<< Updated upstream
 
   const handleLinkClick = (event, path) => {
     event.preventDefault(); // Prevent default link behavior
@@ -24,18 +25,34 @@ const QuestUI = () => {
   };
 
   // Define points for each question
+=======
+>>>>>>> Stashed changes
   const questPoints = {
     '1': 200,
     '2': 300,
   };
 
-  // Calculate number of quests
   const numberOfQuests = Object.keys(questPoints).length;
 
+<<<<<<< Updated upstream
   const handleLogout = () => { //logout handler
     localStorage.removeItem('authToken'); 
+=======
+  // actual functions:
+  const handleLinkClick = (event, path, questID) => {
+    event.preventDefault();
+    setLoading(true);
+
+    setTimeout(() => {
+      router.push(path);
+      localStorage.setItem("questID", questID);
+    }, 500);
+  };
+
+  const handleLogout = () => {
+>>>>>>> Stashed changes
     localStorage.removeItem("username");
-    router.push('/'); // Redirect to login page after logout
+    router.push('/');
   };
 
   return (
@@ -50,7 +67,6 @@ const QuestUI = () => {
         ></iframe>
       </div>
 
-      {/* Loading Spinner */}
       {loading && <LoadingSpinner />}
 
       {/* Quest List with Routing */}
@@ -61,9 +77,9 @@ const QuestUI = () => {
             {Object.keys(questPoints).map((id) => (
               <a
                 key={id}
-                href={`/questID`}
+                href={`/questionID`}
                 className={styles.questItem}
-                onClick={(e) => handleLinkClick(e, `/questID`)}
+                onClick={(e) => handleLinkClick(e, `/questionID`, id)}
               >
                 <span>Quest {id}: Mental Health Question {id}</span>
                 <span className={styles.questPoints}>

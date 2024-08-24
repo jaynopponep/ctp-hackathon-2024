@@ -40,10 +40,10 @@ Adding or incrementing a user's score requires params user and score (the new sc
 host/add-score?user=<username-here>&score=<added-score-here>
 ```
 
-### Get questions
-Retrieving questions requires the quest id. Write endpoints like below:</br>
+### Get question set
+Retrieving questions & their answer choices requires the quest id. Write endpoints like below:</br>
 ```
-host/get-questions?quest_id=<quest-id-here>
+host/get-questions-set?quest_id=<quest-id-here>
 ```
 
 ### Get options/answer choices

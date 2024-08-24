@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import styles from './QuestionPage.module.css'; // Import the CSS module
+import styles from './QuestionPage.module.css';
 
 const QuestionPage = () => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -12,7 +12,7 @@ const QuestionPage = () => {
   const [timeRemaining, setTimeRemaining] = useState(30);
   const [timerExpired, setTimerExpired] = useState(false);
   const [timerId, setTimerId] = useState(null);
-  const [question, setQuestion] = useState('Loading question...'); // Default state to indicate loading
+  const [question, setQuestion] = useState('Loading question...');
   const [optionOne, setOptionOne] = useState('Option 1');
   const [optionTwo, setOptionTwo] = useState('Option 2');
   const [optionThree, setOptionThree] = useState('Option 3');
@@ -23,16 +23,17 @@ const QuestionPage = () => {
   useEffect(() => {
     const fetchQuestion = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:5000/get-question?quest_id=${questID}`);
+        const response = await fetch(`http://127.0.0.1:5000/get-questions?${questID}`);
         const data = await response.json();
-        if (data && data.question_title) {
-          setQuestion(data.question_title); // Set the question title
+        if (Array.isArray(data) && data.length > 0) {
+          const firstQuestion = data[0];
+          setQuestion(firstQuestion.question_title);
         } else {
-          setQuestion('Question not found'); // Handle case where no question is returned
+          setQuestion('Question not found');
         }
       } catch (error) {
         console.error('Error fetching question:', error.message);
-        setQuestion('Error loading question'); // Handle fetch error
+        setQuestion('Error loading question');
       }
     };
 
@@ -99,37 +100,23 @@ const QuestionPage = () => {
       </div>
 
       <div className="grid grid-cols-2 gap-4 w-full max-w-md">
-        {questID === '1' ? (
-          ['NAC 1-113', 'Marshak MR-3', 'ARC Library', 'NAC 7-118'].map((answer) => (
+        {[optionOne, optionTwo, optionThree, optionFour].map((answer, index) => (
             <button
-              key={answer}
-              onClick={() => handleAnswerClick(answer)}
-              className={`${styles.answerButton} ${selectedAnswer === answer ? (isCorrect ? styles.buttonCorrect : styles.buttonIncorrect) : 
-                (answer === 'NAC 1-113' ? styles.buttonRed : answer === 'Marshak MR-3' ? styles.buttonBlue : answer === 'ARC Library' ? styles.buttonYellow : styles.buttonGreen)}`}
-              disabled={timerExpired}
+                key={answer}
+                onClick={() => handleAnswerClick(answer)}
+                className={`${styles.answerButton} ${selectedAnswer === answer ? (isCorrect ? styles.buttonCorrect : styles.buttonIncorrect) :
+                    (index === 0 ? styles.buttonRed : index === 1 ? styles.buttonBlue : index === 2 ? styles.buttonYellow : styles.buttonGreen)}`}
+                disabled={timerExpired}
             >
               {answer}
             </button>
-          ))
-        ) : (
-          ['Counseling Center', 'Health Center', 'Student Services', 'Library'].map((answer) => (
-            <button
-              key={answer}
-              onClick={() => handleAnswerClick(answer)}
-              className={`${styles.answerButton} ${selectedAnswer === answer ? (isCorrect ? styles.buttonCorrect : styles.buttonIncorrect) : 
-                (answer === 'Counseling Center' ? styles.buttonRed : answer === 'Health Center' ? styles.buttonBlue : answer === 'Student Services' ? styles.buttonYellow : styles.buttonGreen)}`}
-              disabled={timerExpired}
-            >
-              {answer}
-            </button>
-          ))
-        )}
+        ))}
       </div>
 
       {isCompleted && !timerExpired && (
-        <div className={styles.completedMessage}>
-          This question is marked as completed.
-        </div>
+          <div className={styles.completedMessage}>
+            This question is marked as completed.
+          </div>
       )}
     </div>
   );
